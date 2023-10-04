@@ -2,28 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ab4ea214-06e5-45c6-bec2-beda54085d8e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/hardwareapp/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/public/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/public/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/App.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/Form.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/Forms.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/Login.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/reportWebVitals.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/setupTests.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hardwareapp/src/yctw9r01.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardwareapp/src/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/hardwareapp/src/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardwareapp/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/hardwareapp/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +21,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../ECE461L/nodeJS/firstproject" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
