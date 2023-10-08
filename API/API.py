@@ -27,5 +27,17 @@ def check_login():
         return jsonify(response), 401
 
 
+@app.route("/create", methods=["POST"])
+def create_account():
+    info = request.get_json()
+    username = info.get("username")
+    password = info.get("password")
+    newUser = {
+        "username": username,
+        "password": password
+    }
+    collection.insert_one(newUser)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
