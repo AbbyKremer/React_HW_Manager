@@ -7,6 +7,8 @@
 import React, { useState } from 'react';
 import './Form.css';
 import logo from './yctw9r01.svg';
+import axios from 'axios'
+
 
 function Form() {
   const [inputValue, setInputValue] = useState('');
@@ -21,11 +23,37 @@ function Form() {
     setPassword(event.target.value);
   }
 
-  const clickHandler = () => {
-    setInputValue("");
-    setPassword("");
-    setOutput(inputValue+" "+password);
-  };
+const clickHandler = async () => {
+  try {
+    // Create a data object with username and password
+    const data = {
+      username: inputValue,
+      password: password,
+    };
+
+    // Send POST request to server
+    const response = await axios.post('/login', data,{headers: {
+            'Content-Type': 'application/json',
+        }});
+
+    if (response.status === 200) {
+      const responseData = response.data;
+      // success!
+      console.log('Response:', responseData.message);
+      setOutput(responseData.message);
+    } else {
+      throw new Error('Login failed');
+    }
+  } catch (error) {
+    // failed
+    console.error('Error:', error.message);
+    setOutput('Login failed');
+  }
+
+  setInputValue('');
+  setPassword('');
+};
+
 
   return(
     <div className="Form">
