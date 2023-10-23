@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
+import db_management
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
@@ -15,8 +16,7 @@ def check_login():
     info = request.get_json()
     username = info.get("username")
     password = info.get("password")
-    user = collection.find_one({"username": username, "password": password})
-    print(user)
+    user = db_management.authenticateUser(username, password)
     if user:
         # User is authenticated
         response = {"message": "Login successful"}
