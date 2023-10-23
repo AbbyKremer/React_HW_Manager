@@ -5,12 +5,6 @@ import db_management
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-client = MongoClient("mongodb+srv://ramezhatab:JaA3hEhFLNPcU9c9@cluster0.x1jngyq.mongodb.net/?retryWrites=true&w=majority")
-db = client.get_database("HardwareApplication")
-
-collection = db.get_collection("UserInfo")
-
-
 @app.route('/login', methods=["POST"])
 def check_login():
     info = request.get_json()
@@ -32,11 +26,7 @@ def create_account():
     info = request.get_json()
     username = info.get("username")
     password = info.get("password")
-    newUser = {
-        "username": username,
-        "password": password
-    }
-    collection.insert_one(newUser)
+    db_management.addNewUser(username, password)
 
 
 if __name__ == "__main__":
