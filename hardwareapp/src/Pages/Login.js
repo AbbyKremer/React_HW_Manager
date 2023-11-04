@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 //import ReactDOM from "react-dom";
-
+import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
+
 function Login() {
+
+let navigate = useNavigate();
+  const routeChange = (path) =>{
+    navigate(path);
+  }
 // React States
 // const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -24,9 +30,9 @@ function Login() {
           "Content-Type": "application/json",
         },
       });
-
       if (response.status === 200) {
         setIsSubmitted(true);
+        routeChange("/projects") //login correct: go to project page (will prob add username to this url so show correct page)
       } else {
         // Handle login failure
         //make some sort of wrong username/password 
