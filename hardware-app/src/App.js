@@ -104,11 +104,7 @@ function Login (){
                 <Button variant="outlined" onClick = {handleLogin}>
                     Login
                 </Button>
-                <Button variant="outlined" onClick = {handleRegister}>
-                    Register
-                </Button>
             </div>
-
         </div>
     );
 }
