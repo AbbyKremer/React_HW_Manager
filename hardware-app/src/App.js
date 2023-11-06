@@ -34,7 +34,7 @@ function Login (){
             });
 
             if (response.status === 200) {
-                navigate('/Projects', {state:{"user" :  user}});
+                navigate('/Projects', {state:{"user":user}});
             } else {
                 setUser("");
                 setPass("");
@@ -84,7 +84,7 @@ function Login (){
 function LoginScreen(){
     return(
         <div className = "centered">
-            <h2>Welcome to the Hardware Manager. Login Access Projects.</h2>
+            <h2>Welcome to the Hardware Manager. Login to Access Projects.</h2>
             <Login/>
         </div>
     )
@@ -197,7 +197,7 @@ function ViewProject (){
 
 function ProjectScreen (){
     const location = useLocation();
-    const user = location.state?.user
+    const user = location.state?.user;
     console.log(user);
     const[projectID, setProjectID] = useState("");
     const[projectIDJoin, setProjectIDJoin] = useState("");
