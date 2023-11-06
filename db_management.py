@@ -1,7 +1,6 @@
 import pymongo
 import certifi
 import cipher
-from flask import jsonify
 
 def addProject(project_name, HWSet1_Capacity, HWSet2_Capacity):
     file = certifi.where()

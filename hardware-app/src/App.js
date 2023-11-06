@@ -10,44 +10,22 @@ import{
     useNavigate,
     Link,
 } from "react-router-dom";
-import React from "react";
+import React, {useState} from "react";
 
-function useNavigation() {
-  let navigate = useNavigate();
-  return (path) => {
-    navigate(path);
-  };
-}
-function LoginNav(props) {
-  let navigate = useNavigation();
-  return <Login {...props} navigate={navigate} />;
-}
 
-function ProjectsNav(props) {
-  let navigate = useNavigation();
-  return <ProjectScreen {...props} navigate={navigate} />;
-}
+function Login (){
+    const [user, setUser] = useState("");
+    const[pass, setPass] = useState("");
+    const navigate = useNavigate();
 
-function ProjectNav(props) {
-  let navigate = useNavigation();
-  return <ViewProject {...props} navigate={navigate} />;
-}
-class Login extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            user: "",
-            pass: ""
-        }
-    }
-    handleLogin = async(event) => {
+    const handleLogin = async(event) => {
         event.preventDefault();
         try {
             const response = await fetch("http://localhost:5000/login", {
                 method: "POST",
                 body: JSON.stringify({
-                    username: this.state.user,
-                    password: this.state.pass
+                    username: user,
+                    password: pass
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -55,34 +33,28 @@ class Login extends React.Component{
             });
 
             if (response.status === 200) {
-                this.props.navigate('/Projects', {state:{"username" :  this.state.user}});
+                navigate('/Projects', {state:{"username" :  user}});
             } else {
-                this.setState({
-                    user: "",
-                    pass:""
-                })
+                setUser("");
+                setPass("");
                 alert('Login failed: Incorrect username or password. Please try again.');
             }
             } catch (error) {
-                this.setState({
-                    user: "",
-                    pass:""
-                })
+                setUser("");
+                setPass("");
                 alert('An error occurred, please try again later.');
         }
-    }
-    render(){
-        return <div>
+    };
+
+    return (<div>
             <div className = 'addMargin'>
                <OutlinedInput
                         size="small"
                         id="component-outlined"
                         placeholder = "Username"
-                        value = {this.state.user}
+                        value = {user}
                         onChange={(event) => {
-                            this.setState({
-                                user: event.target.value
-                            })
+                            setUser(event.target.value);
                         }}
                 />
             </div>
@@ -91,30 +63,28 @@ class Login extends React.Component{
                         size="small"
                         id="component-outlined"
                         placeholder = "Password"
-                        value = {this.state.pass}
+                        type ="password"
+                        value = {pass}
                         onChange={(event) => {
-                            this.setState({
-                                pass: event.target.value
-                            })
+                            setPass(event.target.value)
                         }}
                 />
             </div>
             <div className = 'addMargin'>
-                <Button variant="outlined" onClick = {this.handleLogin}>
+                <Button variant="outlined" onClick = {handleLogin}>
                     Login
                 </Button>
             </div>
 
         </div>
-    }
-
+    );
 }
 
 function LoginScreen(){
     return(
         <div className = "centered">
             <h2>Welcome to the Hardware Manager. Login Access Projects.</h2>
-            <LoginNav/>
+            <Login/>
         </div>
     )
 }
@@ -192,30 +162,25 @@ class Project extends React.Component{
          <div className="App">
              <h2>{this.props.name}</h2>
              <p>Members: {this.props.members}</p>
-             <div class= "increaseMargin">
+             <div className= "increaseMargin">
                 <HardwareSet name = "HWSet1"/>
              </div>
-             <div class= "increaseMargin">
+             <div className= "increaseMargin">
                  <HardwareSet name = "HWSet2"/>
              </div>
         </div>
         );
     }
 }
+function ViewProject (){
+    const [ProjectID, setProjectID] = useState("");
+    const[HWSet1A, setHWSet1A] = useState(0);
+    const[HWSet2A, setHWSet2A] = useState(0);
+    const[HWSet1C, setHWSet1C] = useState(0);
+    const[HWSet2C, setHWSet2C] = useState(0);
+    const navigate = useNavigate();
 
-class ViewProject extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            ProjectID:"",
-            HWSet1A:"",
-            HWSet2A:"",
-            HWSet1C:"",
-            HWSet2C:""
-        }
-    }
-    render(){
-         return (
+    return (
          <div className="App">
              <h1>Project Manager</h1>
              <h2>Projects You Currently Have Access To: </h2>
@@ -225,27 +190,23 @@ class ViewProject extends React.Component{
              </div>
              <Link to= "/">Go Home</Link>
         </div>
-        );
-    }
+    );
 }
 
 
-class ProjectScreen extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            username: "",
-            projectID: "",
-            projectIDJoin: ""
-        }
-    }
-    handleViewProject= async(event) => {
+function ProjectScreen (){
+    const [user, setUser] = useState("");
+    const[projectID, setProjectID] = useState("");
+    const[projectIDJoin, setProjectIDJoin] = useState("");
+    const navigate = useNavigate();
+
+    const handleViewProject= async(event) => {
         event.preventDefault();
         try {
             const response = await fetch("http://localhost:5000/getProject", {
                 method: "POST",
                 body: JSON.stringify({
-                    projectID: this.state.projectID,
+                    projectID: projectID
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -253,28 +214,25 @@ class ProjectScreen extends React.Component{
             });
 
             if (response.status === 200) {
-                this.props.navigate('/ProjectView');
+                navigate('/ProjectView');
             } else {
-                this.setState({
-                    projectID: "",
-                })
+                setProjectID("")
                 alert('Sorry, you do not have access to this project.');
             }
             } catch (error) {
-                this.setState({
-                    projectID: "",
-                })
+                setProjectID("")
                 alert('An error occurred, please try again later.');
         }
     }
 
-    handleAddProject= async(event) => {
+    const handleAddProject= async(event) => {
         event.preventDefault();
         try {
             const response = await fetch("http://localhost:5000/addProject", {
                 method: "POST",
                 body: JSON.stringify({
-                    projectIDJoin: this.state.projectIDJoin,
+                    username: user,
+                    projectIDJoin: projectIDJoin
                 }),
                 headers: {
                     "Content-Type": "application/json",
@@ -283,40 +241,32 @@ class ProjectScreen extends React.Component{
 
             if (response.status === 200) {
                 console.log(response)
-                this.props.navigate('/ProjectView', {state: {"ProjectID": response["ProjectID"], "HWSet1A": response["HWSet1A"], "HWSet2A": response["HWSet2A"], "HWSet1C" : response["HWSet1C"], "HWSet2C" : response["HWSet2C"]}});
+                navigate('/ProjectView', {state: {"ProjectID": response["ProjectID"], "HWSet1A": response["HWSet1A"], "HWSet2A": response["HWSet2A"], "HWSet1C" : response["HWSet1C"], "HWSet2C" : response["HWSet2C"]}});
             } else {
-                this.setState({
-                    projectIDJoin: "",
-                })
+                setProjectIDJoin("")
             }
             } catch (error) {
-                this.setState({
-                    projectIDJoin: "",
-                })
+                setProjectIDJoin("")
                 alert('An error occurred, please try again later.');
         }
     }
 
-
-    render(){
-         return (
+    return (
          <div className="centered">
-             <h2>Pick a Project to Access: </h2>
+             <h2>Pick a Project to Access {user}: </h2>
              <div className = 'addMargin'>
                <OutlinedInput
                         size="small"
                         id="component-outlined"
                         placeholder = "Enter a ProjectID to View"
-                        value = {this.state.projectID}
+                        value = {projectID}
                         onChange={(event) => {
-                            this.setState({
-                                projectID: event.target.value
-                            })
+                            setProjectID(event.target.value)
                         }}
                 />
             </div>
              <div className = 'addMargin'>
-                <Button variant="outlined" onClick = {this.handleViewProject}>
+                <Button variant="outlined" onClick = {handleViewProject}>
                     View Project
                 </Button>
             </div>
@@ -326,22 +276,19 @@ class ProjectScreen extends React.Component{
                         size="small"
                         id="component-outlined"
                         placeholder = "Enter a ProjectID to Join"
-                        value = {this.state.projectIDJoin}
+                        value = {projectIDJoin}
                         onChange={(event) => {
-                            this.setState({
-                                projectIDJoin: event.target.value
-                            })
+                            setProjectIDJoin(event.target.value)
                         }}
                 />
             </div>
              <div className = 'addMargin'>
-                <Button variant="outlined" onClick = {this.handleAddProject}>
+                <Button variant="outlined" onClick = {handleAddProject}>
                     View Project
                 </Button>
             </div>
         </div>
         );
-    }
 
 }
 
@@ -351,8 +298,8 @@ function App(){
             <div>
                 <Routes>
                     <Route path = "/" element={<LoginScreen />} exact/>
-                    <Route path = "/Projects" element = {<ProjectsNav />} />
-                    <Route path = "/ProjectView" element={<ProjectNav />} />
+                    <Route path = "/Projects" element = {<ProjectScreen />} />
+                    <Route path = "/ProjectView" element={<ViewProject />} />
                 </Routes>
             </div>
         </Router>
