@@ -86,6 +86,9 @@ function LoginScreen(){
         <div className = "centered">
             <h2>Welcome to the Hardware Manager. Login to Access Projects.</h2>
             <Login/>
+            <div className = "centerText">
+                <Link to= "/CreateAccount">Create a New Account</Link>
+            </div>
         </div>
     )
 }
@@ -198,12 +201,14 @@ function ViewProject (){
 function ProjectScreen (){
     const location = useLocation();
     const user = location.state?.user;
-    console.log(user);
     const[projectID, setProjectID] = useState("");
     const[projectIDJoin, setProjectIDJoin] = useState("");
     const navigate = useNavigate();
 
+
     const handleViewProject= async(event) => {
+        console.log("hello");
+        console.log(user);
         event.preventDefault();
         try {
             const response = await fetch("http://localhost:5000/getProject", {
@@ -292,8 +297,20 @@ function ProjectScreen (){
                     View Project
                 </Button>
             </div>
+             <div className = "centerText">
+                 <Link to= "/CreateProject">Create a New Project</Link>
+             </div>
+
         </div>
         );
+
+}
+
+function CreateAccount () {
+
+}
+
+function CreateProject () {
 
 }
 
@@ -304,6 +321,8 @@ function App(){
                 <Routes>
                     <Route path = "/" element={<LoginScreen />} exact/>
                     <Route path = "/Projects" element = {<ProjectScreen />} />
+                    <Route path = "/Projects" element = {<CreateAccount />} />
+                    <Route path = "/Projects" element = {<CreateProject />} />
                     <Route path = "/ProjectView" element={<ViewProject />} />
                 </Routes>
             </div>

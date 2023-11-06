@@ -65,3 +65,8 @@
 .addMargin{
   margin: 10px;
 }
+
+.centerText{
+  text-align: center;
+}
+
