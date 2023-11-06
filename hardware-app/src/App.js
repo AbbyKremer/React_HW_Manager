@@ -46,6 +46,35 @@ function Login (){
                 alert('An error occurred, please try again later.');
         }
     };
+    const handleRegister = async(event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch("http://localhost:5000/addUser", {
+                method: "POST",
+                body: JSON.stringify({
+                    username: user,
+                    password: pass
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
+                navigate('/Projects', {state:{"user" :  user}});
+                alert('User successfully created.');
+            } else {
+                setUser("");
+                setPass("");
+                alert('Registration failed. Please try again.');
+            }
+            } catch (error) {
+                setUser("");
+                setPass("");
+                alert('An error occurred, please try again later.');
+        }
+    };
+
 
     return (<div>
             <div className = 'addMargin'>
@@ -74,6 +103,9 @@ function Login (){
             <div className = 'addMargin'>
                 <Button variant="outlined" onClick = {handleLogin}>
                     Login
+                </Button>
+                <Button variant="outlined" onClick = {handleRegister}>
+                    Register
                 </Button>
             </div>
 
