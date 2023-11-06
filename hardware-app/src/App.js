@@ -8,6 +8,7 @@ import{
     Routes,
     Route,
     useNavigate,
+    useLocation,
     Link,
 } from "react-router-dom";
 import React, {useState} from "react";
@@ -33,7 +34,7 @@ function Login (){
             });
 
             if (response.status === 200) {
-                navigate('/Projects', {state:{"username" :  user}});
+                navigate('/Projects', {state:{"user" :  user}});
             } else {
                 setUser("");
                 setPass("");
@@ -195,7 +196,9 @@ function ViewProject (){
 
 
 function ProjectScreen (){
-    const [user, setUser] = useState("");
+    const location = useLocation();
+    const user = location.state?.user
+    console.log(user);
     const[projectID, setProjectID] = useState("");
     const[projectIDJoin, setProjectIDJoin] = useState("");
     const navigate = useNavigate();
@@ -206,6 +209,7 @@ function ProjectScreen (){
             const response = await fetch("http://localhost:5000/getProject", {
                 method: "POST",
                 body: JSON.stringify({
+                    username: user,
                     projectID: projectID
                 }),
                 headers: {
@@ -241,7 +245,8 @@ function ProjectScreen (){
 
             if (response.status === 200) {
                 console.log(response)
-                navigate('/ProjectView', {state: {"ProjectID": response["ProjectID"], "HWSet1A": response["HWSet1A"], "HWSet2A": response["HWSet2A"], "HWSet1C" : response["HWSet1C"], "HWSet2C" : response["HWSet2C"]}});
+                // navigate('/ProjectView', {state: {"ProjectID": response["ProjectID"], "HWSet1A": response["HWSet1A"], "HWSet2A": response["HWSet2A"], "HWSet1C" : response["HWSet1C"], "HWSet2C" : response["HWSet2C"]}});
+                navigate('/ProjectView')
             } else {
                 setProjectIDJoin("")
             }

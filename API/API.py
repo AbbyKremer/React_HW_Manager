@@ -31,6 +31,9 @@ def create_account():
     username = info.get("username")
     password = info.get("password")
     db_management.addNewUser(username, password)
+    response = {"username": username, "password": password}
+    jsonify(response)
+    return response, 200
 
 
 @app.route("/addProject", methods=["POST"])
@@ -40,9 +43,24 @@ def add_project():
         return jsonify({'message': 'No JSON data receieved'}), 400
     username = info.get("username")
     projectID = info.get("projectIDJoin")
-    db_management.addAccessProject(username, projectID)
-    project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
-    response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
+    # db_management.addAccessProject(username, projectID)
+    # project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
+    # response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
+    response = {"username": username, "projectID": projectID}
+    jsonify(response)
+    return response, 200
+
+@app.route("/getProject", methods=["POST"])
+def get_project():
+    info = request.get_json()
+    if not info:
+        return jsonify({'message': 'No JSON data receieved'}), 400
+    username = info.get("username")
+    projectID = info.get("projectID")
+    # db_management.addAccessProject(username, projectID)
+    # project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
+    # response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
+    response = {"username": username, "projectID": projectID}
     jsonify(response)
     return response, 200
 
