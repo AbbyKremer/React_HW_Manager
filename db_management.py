@@ -1,6 +1,7 @@
 import pymongo
 import certifi
 import cipher
+from flask import jsonify
 
 def addProject(project_name, HWSet1_Capacity, HWSet2_Capacity):
     file = certifi.where()
@@ -120,11 +121,16 @@ def authenticateUser(userid, password1):
     db = client["HardwareApplication"]
     col = db["UserInfo"]
     user = col.find_one({"Username": userid})
-    password = cipher.decrypt(user["Password"], 3, 1)
-    if password1 != password:
-        return False
+    if user:
+        password = cipher.decrypt(user["Password"], 3, 1)
+        if password1 != password:
+            return False
+        else:
+            return True
     else:
-        return True
+        return False
+    client.close()
+
 
 
 def addAccessProject(userid, projectName):
@@ -135,4 +141,30 @@ def addAccessProject(userid, projectName):
     col = db["UserInfo"]
     col.update_one({"Username": userid}, {"$addToSet": {"ProjectAccess": projectName}})
     client.close()
+
+
+def hasProjectAccess(userid, projectID):
+    file = certifi.where()
+    client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
+                                 "&w=majority&ssl=true&tlsCAFile=" + file)
+    db = client["HardwareApplication"]
+    col = db["UserInfo"]
+    account = col.find_one({"Username": userid})
+    if projectID in account["ProjectAccess"]:
+        return True
+    else:
+        return False
+    client.close()
+
+def getProject(projectID):
+    file = certifi.where()
+    client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
+                                 "&w=majority&ssl=true&tlsCAFile=" + file)
+    db = client["HardwareApplication"]
+    col = db["ProjectInfo"]
+    project = col.find_one({"ProjectID": projectID})
+    return project["ProjectID"], project["HWSet1_Availability"], project["HWSet2_Availability"], project["HWSet1_Capacity"], project["HWSet2_Capacity"]
+    client.close()
+
+
 

@@ -49,5 +49,21 @@
   margin-bottom: 10px;
 }
 
+.centered{
+  position: absolute; /* or use position: fixed; */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 50px;
+}
+
+.centered > *{
+  margin: 10px;
+  text-align: center;
+}
+
+.addMargin{
+  margin: 10px;
+}
 
 
