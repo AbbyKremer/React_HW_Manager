@@ -84,19 +84,20 @@ def check_out():
     info = request.get_json()
     if not info:
         return jsonify({'message': 'No JSON data receieved'}), 400
-    projectID = info.get()
+    projectID = info.get('projectID')
     num = info.get('num')
     HWSet = info.get("HWSet")
     if HWSet == "HWSet1":
-        num = db_management.checkOutHWSet1(projectID, num)
+        output = db_management.checkOutHWSet1(projectID, int(num))
     else:
-        num = db_management.checkOutHWSet2(projectID, num)
-    if num != -1:
-        response = {db_management.queryHWSet1Capacity(projectID), db_management.queryHWSet1Availability(projectID)}
+        output = db_management.checkOutHWSet2(projectID, int(num))
+    if output != -1:
+        print('here')
+        response = {"capacity":db_management.queryHWSet1Capacity(projectID), "availability":db_management.queryHWSet1Availability(projectID)}
         return jsonify(response), 200
     else:
         response = {"message": "You do not have enough hardware to check out this many items"}
-        return jsonify(response), 404
+        return jsonify(response), 401
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

@@ -2,21 +2,25 @@ import Grid from "@mui/material/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 
 const HardwareSet = (props) =>{
     const[capacity, setCapacity] = useState(props.capacity)
     const[availability, setAvailability] = useState(props.availability)
-    const[num, setNum] = useState(0)
+    const[num, setNum] = useState('')
 
+    const numRef = useRef();
+    console.log(numRef)
     const handleCheckIn = async(event) => {
         event.preventDefault();
+        const numCheck = numRef.current.value;
+        console.log(numCheck);
         try {
             const response = await fetch("http://localhost:5000/checkIn", {
                 method: "POST",
                 body: JSON.stringify({
                     projectID : props.projectID,
-                    num: parseInt(num),
+                    num: numCheck,
                     HWSet: props.name
                 }),
                 headers: {
@@ -37,23 +41,27 @@ const HardwareSet = (props) =>{
     }
     const handleCheckOut = async(event) => {
         event.preventDefault();
+        const numCheck = numRef.current.value;
+        console.log(numCheck);
         try {
             const response = await fetch("http://localhost:5000/checkOut", {
                 method: "POST",
                 body: JSON.stringify({
                     projectID : props.projectID,
-                    num: parseInt(num)
+                    num: numCheck,
+                    HWSet: props.name
                 }),
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
 
-            if (response.status === 200) {
+            if (response.status == 200) {
                 setAvailability(response.get("availability"))
+                alert('You successfully checked out ' + numCheck + ' items')
             } else {
                 setNum("")
-                alert('You do not have enough hardware to check out' + num + 'items')
+                alert('You do not have enough hardware to check out ' + numCheck + ' items')
             }
             } catch (error) {
                 setNum("")
@@ -72,6 +80,7 @@ const HardwareSet = (props) =>{
                         size="small"
                         id="component-outlined"
                         placeholder = "Enter amount"
+                        inputRef={numRef}
                         onChange={(event) => {
                             setNum(event.target.value);
                         }}

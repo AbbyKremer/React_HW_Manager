@@ -23,7 +23,7 @@ def queryHWSet1Availability(project_name):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     project = col.find_one({"ProjectID": project_name})
-    availability = project["HWSet1_Availability"]
+    availability = int(project["HWSet1_Availability"])
     client.close()
     return availability
 
@@ -66,10 +66,14 @@ def checkOutHWSet1(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    num=-1
-    if queryHWSet1Availability(project) - amount >= 0:
-        col.update_one({"ProjectID": project}, {"HWSet1_Availability": (queryHWSet1Availability(project) - amount)})
-        num =(queryHWSet1Availability(project) - amount)
+    num = -1
+    available = queryHWSet1Availability(project)
+    dif = available - amount
+    print(dif)
+    if dif >= 0:
+        col.update_one({"ProjectID": project}, {"$set": {"HWSet1_Availability": str(dif)}})
+        print(queryHWSet1Availability(project))
+        num = dif
     return num
     client.close()
 
