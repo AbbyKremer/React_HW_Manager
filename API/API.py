@@ -50,19 +50,54 @@ def add_project():
     jsonify(response)
     return response, 200
 
-@app.route("/getProject", methods=["POST"])
-def get_project():
+@app.route("/joinProject", methods=["POST"])
+def join_project():
     info = request.get_json()
     if not info:
         return jsonify({'message': 'No JSON data receieved'}), 400
-    username = info.get("username")
+    username = info.get('username')
+    projectID = info.get("projectIDJoin")
+    db_management.addAccessProject(username, projectID)
+
+
+
+@app.route("/getProject", methods=["POST"])
+def get_project():
+    print('here');
+    info = request.get_json()
+    if not info:
+        return jsonify({'message': 'No JSON data receieved'}), 400
+    username = info.get('username')
     projectID = info.get("projectID")
-    # db_management.addAccessProject(username, projectID)
-    # project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
-    # response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
-    response = {"username": username, "projectID": projectID}
-    jsonify(response)
-    return response, 200
+    if db_management.hasProjectAccess(username, projectID):
+        project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
+        response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
+        return jsonify(response), 200
+    else:
+        response = {"message": "You do not have access to this project. Please request to join"}
+        return jsonify(response), 401
+
+
+@app.route("/checkOut", methods=["POST"])
+def check_out():
+    info = request.get_json()
+    if not info:
+        return jsonify({'message': 'No JSON data receieved'}), 400
+    projectID = info.get()
+    num = info.get('num')
+    HWSet = info.get("HWSet")
+    if HWSet == "HWSet1":
+        num = db_management.checkOutHWSet1(projectID, num)
+    else:
+        num = db_management.checkOutHWSet2(projectID, num)
+    if num != -1:
+        response = {db_management.queryHWSet1Capacity(projectID), db_management.queryHWSet1Availability(projectID)}
+        return jsonify(response), 200
+    else:
+        response = {"message": "You do not have enough hardware to check out this many items"}
+        return jsonify(response), 404
+
+
 
 
 if __name__ == "__main__":

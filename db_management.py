@@ -66,7 +66,11 @@ def checkOutHWSet1(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    col.update_one({"ProjectID" : project}, {"HWSet1_Availability" : (queryHWSet1Availability(project)-amount)})
+    num=-1
+    if queryHWSet1Availability(project) - amount >= 0:
+        col.update_one({"ProjectID": project}, {"HWSet1_Availability": (queryHWSet1Availability(project) - amount)})
+        num =(queryHWSet1Availability(project) - amount)
+    return num
     client.close()
 
 def checkOutHWSet2(project, amount):
@@ -75,7 +79,11 @@ def checkOutHWSet2(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    col.update_one({"ProjectID": project}, {"HWSet2_Availability": (queryHWSet2Availability(project) - amount)})
+    num = -1
+    if queryHWSet2Availability(project) - amount >= 0:
+        col.update_one({"ProjectID": project}, {"HWSet2_Availability": (queryHWSet2Availability(project) - amount)})
+        num = (queryHWSet2Availability(project) - amount)
+    return num
     client.close()
 
 def checkInHWSet1(project, amount):
@@ -162,7 +170,8 @@ def getProject(projectID):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     project = col.find_one({"ProjectID": projectID})
-    return project["ProjectID"], project["HWSet1_Availability"], project["HWSet2_Availability"], project["HWSet1_Capacity"], project["HWSet2_Capacity"]
+    if project:
+        return project["ProjectID"], project["HWSet1_Availability"], project["HWSet2_Availability"], project["HWSet1_Capacity"], project["HWSet2_Capacity"]
     client.close()
 
 

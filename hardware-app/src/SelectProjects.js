@@ -12,8 +12,6 @@ function ProjectScreen (){
 
 
     const handleViewProject= async(event) => {
-        console.log("hello");
-        console.log(user);
         event.preventDefault();
         try {
             const response = await fetch("http://localhost:5000/getProject", {
@@ -26,14 +24,23 @@ function ProjectScreen (){
                     "Content-Type": "application/json",
                 },
             });
+            if (response.status == 200) {
+                navigate('/ProjectView', {
+                    state: {
+                        ProjectID: projectID,
+                        HWSet1C: response["HWSet1C"],
+                        HWSet2C: response["HWSet2C"],
+                        HWSet1A: response["HWSet1A"],
+                        HWSet2A: response["HWSet2A"],
+                    }
+                })
 
-            if (response.status === 200) {
-                navigate('/ProjectView');
             } else {
                 setProjectID("")
                 alert('Sorry, you do not have access to this project.');
             }
-            } catch (error) {
+        }
+        catch (error) {
                 setProjectID("")
                 alert('An error occurred, please try again later.');
         }
@@ -54,9 +61,8 @@ function ProjectScreen (){
             });
 
             if (response.status === 200) {
-                console.log(response)
                 // navigate('/ProjectView', {state: {"ProjectID": response["ProjectID"], "HWSet1A": response["HWSet1A"], "HWSet2A": response["HWSet2A"], "HWSet1C" : response["HWSet1C"], "HWSet2C" : response["HWSet2C"]}});
-                navigate('/ProjectView')
+                navigate('/ProjectView', {state: response})
             } else {
                 setProjectIDJoin("")
             }
