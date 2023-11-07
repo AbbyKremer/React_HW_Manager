@@ -117,8 +117,7 @@ function ViewProject (){
     return (
          <div className="App">
              <h1>Project Manager</h1>
-             <h2>{ProjectID} </h2>
-
+             <h2>You are currently viewing {ProjectID} </h2>
              <div className="project">
                  <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A}/>
              </div>

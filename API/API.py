@@ -57,13 +57,14 @@ def join_project():
         return jsonify({'message': 'No JSON data receieved'}), 400
     username = info.get('username')
     projectID = info.get("projectIDJoin")
-    db_management.addAccessProject(username, projectID)
-
-
+    if db_management.hasProjectAccess(username, projectID):
+        return jsonify({'message': 'You already have access to this project.'}), 401
+    else:
+        db_management.addAccessProject(username, projectID)
+        return jsonify({'message': 'success'}), 200
 
 @app.route("/getProject", methods=["POST"])
 def get_project():
-    print('here');
     info = request.get_json()
     if not info:
         return jsonify({'message': 'No JSON data receieved'}), 400
@@ -96,9 +97,6 @@ def check_out():
     else:
         response = {"message": "You do not have enough hardware to check out this many items"}
         return jsonify(response), 404
-
-
-
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

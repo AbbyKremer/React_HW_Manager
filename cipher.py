@@ -48,6 +48,5 @@ def decryptFile(fileName):
     return actual_names
 
 word = encrypt("pass", 3, 1)
-print(decrypt(word, 3, 1))
 
 

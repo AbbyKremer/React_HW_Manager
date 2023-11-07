@@ -10,7 +10,6 @@ function ProjectScreen (){
     const[projectIDJoin, setProjectIDJoin] = useState("");
     const navigate = useNavigate();
 
-
     const handleViewProject= async(event) => {
         event.preventDefault();
         try {
@@ -25,13 +24,14 @@ function ProjectScreen (){
                 },
             });
             if (response.status == 200) {
+                const data = await response.json()
                 navigate('/ProjectView', {
                     state: {
                         ProjectID: projectID,
-                        HWSet1C: response["HWSet1C"],
-                        HWSet2C: response["HWSet2C"],
-                        HWSet1A: response["HWSet1A"],
-                        HWSet2A: response["HWSet2A"],
+                        HWSet1C: parseInt(data.HWSet1C),
+                        HWSet2C: parseInt(data.HWSet2C),
+                        HWSet1A: parseInt(data.HWSet1A),
+                        HWSet2A: parseInt(data.HWSet2A)
                     }
                 })
 
@@ -49,7 +49,7 @@ function ProjectScreen (){
     const handleAddProject= async(event) => {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/addProject", {
+            const response = await fetch("http://localhost:5000/joinProject", {
                 method: "POST",
                 body: JSON.stringify({
                     username: user,
@@ -61,10 +61,11 @@ function ProjectScreen (){
             });
 
             if (response.status === 200) {
-                // navigate('/ProjectView', {state: {"ProjectID": response["ProjectID"], "HWSet1A": response["HWSet1A"], "HWSet2A": response["HWSet2A"], "HWSet1C" : response["HWSet1C"], "HWSet2C" : response["HWSet2C"]}});
-                navigate('/ProjectView', {state: response})
-            } else {
+                alert('You were successfully added to ' + projectIDJoin)
                 setProjectIDJoin("")
+            } else{
+                setProjectIDJoin("")
+                alert('You have already joined this project.')
             }
             } catch (error) {
                 setProjectIDJoin("")
@@ -74,7 +75,8 @@ function ProjectScreen (){
 
     return (
          <div className="centered">
-             <h2>Pick a Project to Access {user}: </h2>
+             <h2>Welcome, {user}!</h2>
+             <h2>Pick a Project to Access: </h2>
              <div className = 'addMargin'>
                <OutlinedInput
                         size="small"
@@ -91,7 +93,7 @@ function ProjectScreen (){
                     View Project
                 </Button>
             </div>
-             <h2>Pick a Project to Join and Access: </h2>
+             <h2>Join a New Project: </h2>
              <div className = 'addMargin'>
                <OutlinedInput
                         size="small"
@@ -105,7 +107,7 @@ function ProjectScreen (){
             </div>
              <div className = 'addMargin'>
                 <Button variant="outlined" onClick = {handleAddProject}>
-                    View Project
+                    Join
                 </Button>
             </div>
              <div className = "centerText">
