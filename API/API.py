@@ -42,15 +42,16 @@ def add_project():
     if not info:
         return jsonify({'message': 'No JSON data receieved'}), 400
     username = info.get("username")
-    projectname = info.get("projectIDJoin")
+    projectName = info.get("projectName")
+    projectID = info.get("projectID")
     description = info.get("description")
-    # make this return projectID?
-    db_management.addProject(projectname,description,100,100) #make capacity change later
-    # db_management.addAccessProject(username, projectID) #would still need to be project ID
 
-    # project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
-    # response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
-    response = {"username": username, "projectID": projectname}
+    db_management.addProject(projectID,projectName,description,100,100) #make capacity change later
+    db_management.addAccessProject(username, projectID) #would still need to be project ID
+
+    project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
+    response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
+    # response = {"username": username, "projectID": projectID}
     jsonify(response)
     return response, 200
 

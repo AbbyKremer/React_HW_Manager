@@ -7,17 +7,19 @@ function CreateProject (){
  const location = useLocation();
     const user = location.state?.user;
     const[projectID, setProjectID] = useState("");
+    const[projectName, setProjectName] = useState("");
     const[projectDescription, setProjectDescription] = useState("");
     const navigate = useNavigate();
 
     const handleCreateProject= async(event) => {
         event.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/getProject", {
+            const response = await fetch("http://localhost:5000/addProject", {
                 method: "POST",
                 body: JSON.stringify({
                     username: user,
                     projectID: projectID,
+                    projectName: projectName,
                     description: projectDescription
                 }),
                 headers: {
@@ -56,10 +58,21 @@ function CreateProject (){
                <OutlinedInput
                         size="small"
                         id="component-outlined"
-                        placeholder = "Enter a Project Name"
+                        placeholder = "Enter a ProjectID"
                         value = {projectID}
                         onChange={(event) => {
                             setProjectID(event.target.value)
+                        }}
+                />
+            </div>
+             <div className = 'addMargin'>
+               <OutlinedInput
+                        size="small"
+                        id="component-outlined"
+                        placeholder = "Enter a Project Name"
+                        value = {projectName}
+                        onChange={(event) => {
+                            setProjectName(event.target.value)
                         }}
                 />
             </div>

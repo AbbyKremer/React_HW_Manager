@@ -2,26 +2,26 @@ import pymongo
 import certifi
 import cipher
 
-def addProject(project_name, description, HWSet1_Capacity, HWSet2_Capacity):
+def addProject(project_id,project_name, description, HWSet1_Capacity, HWSet2_Capacity):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    if col.find_one({"ProjectID": project_name}):
+    if col.find_one({"ProjectID": project_id}):
         return "Project Already Exists"
     else:
-        myProject = {"ProjectID": project_name, "Description":description, "HWSet1_Availability": HWSet1_Capacity, "HWSet2_Availability": HWSet2_Capacity, "HWSet1_Capacity": HWSet1_Capacity, "HWSet2_Capacity": HWSet2_Capacity}
+        myProject = {"ProjectID": project_id, "ProjectName":project_name,"Description":description, "HWSet1_Availability": HWSet1_Capacity, "HWSet2_Availability": HWSet2_Capacity, "HWSet1_Capacity": HWSet1_Capacity, "HWSet2_Capacity": HWSet2_Capacity}
         col.insert_one(myProject)
     client.close()
 
-def queryHWSet1Availability(project_name):
+def queryHWSet1Availability(project_id):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_name})
+    project = col.find_one({"ProjectID": project_id})
     if project:
         availability = int(project["HWSet1_Availability"])
     else:
@@ -29,35 +29,35 @@ def queryHWSet1Availability(project_name):
     return availability
     client.close()
 
-def queryHWSet2Availability(project_name):
+def queryHWSet2Availability(project_id):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_name})
+    project = col.find_one({"ProjectID": project_id})
     availability = project["HWSet2_Availability"]
     client.close()
     return availability
 
-def queryHWSet1Capacity(project_name):
+def queryHWSet1Capacity(project_id):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_name})
+    project = col.find_one({"ProjectID": project_id})
     availability = project["HWSet1_Capacity"]
     client.close()
     return availability
 
-def queryHWSet2Capacity(project_name):
+def queryHWSet2Capacity(project_id):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_name})
+    project = col.find_one({"ProjectID": project_id})
     availability = project["HWSet2_Capacity"]
     client.close()
     return availability
@@ -146,13 +146,13 @@ def authenticateUser(userid, password1):
 
 
 
-def addAccessProject(userid, projectName):
+def addAccessProject(userid, projectID):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["UserInfo"]
-    col.update_one({"Username": userid}, {"$addToSet": {"ProjectAccess": projectName}})
+    col.update_one({"Username": userid}, {"$addToSet": {"ProjectAccess": projectID}})
     client.close()
 
 
