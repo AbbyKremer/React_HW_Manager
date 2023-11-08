@@ -111,7 +111,9 @@ function ProjectScreen (){
                 </Button>
             </div>
              <div className = "centerText">
-                 <Link to= "/CreateProject">Create a New Project</Link>
+                 <Link to={{pathname: "/CreateProject", state: {"user" :  user}}}>
+                    Create a new Project
+                    </Link>
              </div>
 
         </div>
