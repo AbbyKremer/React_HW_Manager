@@ -84,6 +84,10 @@ function ProjectScreen (){
         navigate('/CreateProject', {state:{"user":user}});
     }
     
+    const handleLogout = async(event) => {
+        event.preventDefault();
+        navigate('/');
+    }
 
     return (
         <div>
@@ -131,8 +135,10 @@ function ProjectScreen (){
                         Create a New Project
                     </Button>
                 </div>
-                <div className = "centerText">
-                    <Link to= "/">Logout</Link>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleLogout}>
+                        Logout
+                    </Button>
                 </div>
 
             </div>

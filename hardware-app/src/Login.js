@@ -65,7 +65,6 @@ function Login (){
         }
     };
 
-
     return (<div>
             <div className = 'addMargin'>
                <OutlinedInput
@@ -100,6 +99,12 @@ function Login (){
 }
 
 function LoginScreen(){
+
+    const handleCreateAccount = async(event) => {
+        event.preventDefault();
+        navigate('/CreateAccount');
+    }
+
     const navigate = useNavigate();
     const handleGoBack = () => {
         navigate(-1); // Navigate back to the previous page
@@ -113,8 +118,10 @@ function LoginScreen(){
             <div className = "centered">
                 <h2>Welcome to the Hardware Manager. Login to Access Projects.</h2>
                 <Login/>
-                <div className = "centerText">
-                    <Link to= "/CreateAccount">Create a New Account</Link>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleCreateAccount}>
+                        Create a New Account
+                    </Button>
                 </div>
             </div>
         </div>

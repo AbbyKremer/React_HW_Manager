@@ -75,9 +75,16 @@ const [user, setUser] = useState("");
 
 function CreateAccount (){
     const navigate = useNavigate();
+
     const handleGoBack = () => {
         navigate(-1); // Navigate back to the previous page
       };
+
+    const handleReturnToLogin = async(event) => {
+        event.preventDefault();
+        navigate('/');
+    }
+
     return(
         <div>
             <div className="back-arrow" onClick={handleGoBack}>
@@ -86,8 +93,10 @@ function CreateAccount (){
             <div className = "centered">
                 <h2>Create Your Account Here.</h2>
                 <Create/>
-                <div className = "centerText">
-                    <Link to= "/">Return to login</Link>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleReturnToLogin}>
+                        Return to Login
+                    </Button>
                 </div>
             </div>
         </div>

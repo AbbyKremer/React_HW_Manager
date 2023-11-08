@@ -129,6 +129,11 @@ function ViewProject (){
         navigate('/Projects', {state:{"user":user}});
     }
 
+    const handleLogout = async(event) => {
+        event.preventDefault();
+        navigate('/');
+    }
+
     const handleGoBack = () => {
         navigate(-1); // Navigate back to the previous page
       };
@@ -149,8 +154,10 @@ function ViewProject (){
                         Project Selection
                     </Button>
                 </div>
-                <div>
-                    <Link to= "/">Logout</Link>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleLogout}>
+                        Logout
+                    </Button>
                 </div>
             </div>
         </div>
