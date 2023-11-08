@@ -115,6 +115,9 @@ function ProjectScreen (){
                     Create a new Project
                     </Link>
              </div>
+             <div className = "centerText">
+                 <Link to= "/">Logout</Link>
+             </div>
 
         </div>
         );

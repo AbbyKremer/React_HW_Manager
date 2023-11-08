@@ -130,7 +130,12 @@ function ViewProject (){
              <div className="project">
                  <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A}/>
              </div>
-             <Link to= "/">Go Home</Link>
+             <div>
+                <Link to= "/Projects">Project Selection</Link>
+             </div>
+             <div>
+                <Link to= "/">Logout</Link>
+             </div>
         </div>
     );
 }
