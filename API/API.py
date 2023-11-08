@@ -99,5 +99,24 @@ def check_out():
         response = {"message": "You do not have enough hardware to check out this many items"}
         return jsonify(response), 401
 
+@app.route("/checkIn", methods=["POST"])
+def check_in():
+    info = request.get_json()
+    if not info:
+        return jsonify({'message': 'No JSON data received'}), 400
+
+    projectID = info.get('projectID')
+    num = info.get('num')
+    HWSet = info.get("HWSet")
+
+    if HWSet == "HWSet1":
+        db_management.checkInHWSet1(projectID, int(num))
+    else:
+        db_management.checkInHWSet2(projectID, int(num))
+
+    response = {"capacity": db_management.queryHWSet1Capacity(projectID), "availability": db_management.queryHWSet1Availability(projectID)}
+    return jsonify(response), 200
+
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)

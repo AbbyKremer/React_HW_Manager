@@ -96,7 +96,7 @@ def checkInHWSet1(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    col.update_one({"ProjectID": project}, {"HWSet1_Availability": (queryHWSet1Availability(project) + amount)})
+    col.replace_one({"ProjectID": project}, {"HWSet1_Availability": (queryHWSet1Availability(project) + amount)}, True)
     client.close()
 
 def checkInHWSet2(project, amount):
