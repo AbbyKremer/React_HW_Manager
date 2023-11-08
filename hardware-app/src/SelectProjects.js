@@ -32,6 +32,7 @@ function ProjectScreen (){
                 const data = await response.json()
                 navigate('/ProjectView', {
                     state: {
+                        "user":user,
                         ProjectID: projectID,
                         HWSet1C: parseInt(data.HWSet1C),
                         HWSet2C: parseInt(data.HWSet2C),
@@ -78,6 +79,12 @@ function ProjectScreen (){
         }
     }
 
+    const handleCreateProject = async(event) => {
+        event.preventDefault();
+        navigate('/CreateProject', {state:{"user":user}});
+    }
+    
+
     return (
         <div>
             <div className="back-arrow" onClick={handleGoBack}>
@@ -119,10 +126,10 @@ function ProjectScreen (){
                         Join
                     </Button>
                 </div>
-                <div className = "centerText">
-                    <Link to={{pathname: "/CreateProject", state: {"user" :  user}}}>
-                        Create a new Project
-                        </Link>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleCreateProject}>
+                        Create a New Project
+                    </Button>
                 </div>
                 <div className = "centerText">
                     <Link to= "/">Logout</Link>

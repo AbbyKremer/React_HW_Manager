@@ -116,13 +116,19 @@ const Project = (props) =>{
 }
 function ViewProject (){
     const location = useLocation();
+    const navigate = useNavigate();
+    const user = location.state?.user;
     const ProjectID = location.state?.ProjectID;
     const HWSet1C = location.state?.HWSet1C;
     const HWSet2C = location.state?.HWSet2C;
     const[HWSet1A, setHWSet1A] = useState(location.state?.HWSet1A)
     const[HWSet2A, setHWSet2A] = useState(location.state?.HWSet1A)
 
-    const navigate = useNavigate();
+    const handleProjectSelection = async(event) => {
+        event.preventDefault();
+        navigate('/Projects', {state:{"user":user}});
+    }
+
     const handleGoBack = () => {
         navigate(-1); // Navigate back to the previous page
       };
@@ -138,8 +144,10 @@ function ViewProject (){
                 <div className="project">
                     <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A}/>
                 </div>
-                <div>
-                    <Link to= "/Projects">Project Selection</Link>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleProjectSelection}>
+                        Project Selection
+                    </Button>
                 </div>
                 <div>
                     <Link to= "/">Logout</Link>
