@@ -1,6 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React, {useState} from "react";
 
 function Login (){
@@ -99,12 +100,22 @@ function Login (){
 }
 
 function LoginScreen(){
+    const navigate = useNavigate();
+    const handleGoBack = () => {
+        navigate(-1); // Navigate back to the previous page
+      };
+
     return(
-        <div className = "centered">
-            <h2>Welcome to the Hardware Manager. Login to Access Projects.</h2>
-            <Login/>
-            <div className = "centerText">
-                <Link to= "/CreateAccount">Create a New Account</Link>
+        <div>
+            <div className="back-arrow" onClick={handleGoBack}>
+            <ArrowBackIcon />
+            </div>
+            <div className = "centered">
+                <h2>Welcome to the Hardware Manager. Login to Access Projects.</h2>
+                <Login/>
+                <div className = "centerText">
+                    <Link to= "/CreateAccount">Create a New Account</Link>
+                </div>
             </div>
         </div>
     )

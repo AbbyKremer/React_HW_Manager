@@ -1,6 +1,7 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React, {useState} from "react";
 
 function Create (){
@@ -73,12 +74,21 @@ const [user, setUser] = useState("");
 }
 
 function CreateAccount (){
+    const navigate = useNavigate();
+    const handleGoBack = () => {
+        navigate(-1); // Navigate back to the previous page
+      };
     return(
-        <div className = "centered">
-            <h2>Create Your Account Here.</h2>
-            <Create/>
-            <div className = "centerText">
-                <Link to= "/">Return to login</Link>
+        <div>
+            <div className="back-arrow" onClick={handleGoBack}>
+                <ArrowBackIcon />
+            </div>
+            <div className = "centered">
+                <h2>Create Your Account Here.</h2>
+                <Create/>
+                <div className = "centerText">
+                    <Link to= "/">Return to login</Link>
+                </div>
             </div>
         </div>
     )

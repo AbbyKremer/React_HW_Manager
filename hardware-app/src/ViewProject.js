@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import React, {useState, useRef} from "react";
 
@@ -122,20 +123,28 @@ function ViewProject (){
     const[HWSet2A, setHWSet2A] = useState(location.state?.HWSet1A)
 
     const navigate = useNavigate();
-
+    const handleGoBack = () => {
+        navigate(-1); // Navigate back to the previous page
+      };
+      
     return (
-         <div className="App">
-             <h1>Project Manager</h1>
-             <h2>You are currently viewing {ProjectID} </h2>
-             <div className="project">
-                 <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A}/>
-             </div>
-             <div>
-                <Link to= "/Projects">Project Selection</Link>
-             </div>
-             <div>
-                <Link to= "/">Logout</Link>
-             </div>
+        <div>
+            <div className="back-arrow" onClick={handleGoBack}>
+                <ArrowBackIcon />
+            </div>
+            <div className="App">
+                <h1>Project Manager</h1>
+                <h2>You are currently viewing {ProjectID} </h2>
+                <div className="project">
+                    <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A}/>
+                </div>
+                <div>
+                    <Link to= "/Projects">Project Selection</Link>
+                </div>
+                <div>
+                    <Link to= "/">Logout</Link>
+                </div>
+            </div>
         </div>
     );
 }
