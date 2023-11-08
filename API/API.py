@@ -46,7 +46,10 @@ def add_project():
     projectID = info.get("projectID")
     description = info.get("description")
 
-    db_management.addProject(projectID,projectName,description,100,100) #make capacity change later
+    added=db_management.addProject(projectID,projectName,description,100,100) #make capacity change later
+    if added == "Project Already Exists":
+        return jsonify({'message': 'Project Already Exists'}), 401
+
     db_management.addAccessProject(username, projectID) #would still need to be project ID
 
     project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
