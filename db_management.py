@@ -15,52 +15,49 @@ def addProject(project_id,project_name, description, HWSet1_Capacity, HWSet2_Cap
         col.insert_one(myProject)
     client.close()
 
-def queryHWSet1Availability(project_id):
+def queryHWSet1Availability():
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
-    col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_id})
-    if project:
-        availability = int(project["HWSet1_Availability"])
-    else:
-        return -1
-    return availability
-    client.close()
-
-def queryHWSet2Availability(project_id):
-    file = certifi.where()
-    client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
-                                 "&w=majority&ssl=true&tlsCAFile=" + file)
-    db = client["HardwareApplication"]
-    col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_id})
-    availability = project["HWSet2_Availability"]
+    col = db["HardwareSets"]
+    project = col.find_one({"Name": "HWSet1"})
+    availability = project["Availability"]
     client.close()
     return availability
 
-def queryHWSet1Capacity(project_id):
+def queryHWSet2Availability():
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
-    col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_id})
-    availability = project["HWSet1_Capacity"]
+    col = db["HardwareSets"]
+    project = col.find_one({"Name": "HWSet2"})
+    availability = project["Availability"]
     client.close()
     return availability
 
-def queryHWSet2Capacity(project_id):
+def queryHWSet1Capacity():
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
-    col = db["ProjectInfo"]
-    project = col.find_one({"ProjectID": project_id})
-    availability = project["HWSet2_Capacity"]
+    col = db["HardwareSets"]
+    project = col.find_one({"Name": "HWSet1"})
+    capacity = project["Capacity"]
     client.close()
-    return availability
+    return capacity
+
+def queryHWSet2Capacity():
+    file = certifi.where()
+    client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
+                                 "&w=majority&ssl=true&tlsCAFile=" + file)
+    db = client["HardwareApplication"]
+    col = db["HardwareSets"]
+    project = col.find_one({"Name": "HWSet2"})
+    capacity = project["Capacity"]
+    client.close()
+    return capacity
 
 def checkOutHWSet1(project, amount):
     file = certifi.where()
@@ -68,15 +65,15 @@ def checkOutHWSet1(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    num = -1
+    hw = db["HardwareSets"]
     available = queryHWSet1Availability(project)
     dif = available - amount
-    print(dif)
     if dif >= 0:
-        col.update_one({"ProjectID": project}, {"$set": {"HWSet1_Availability": str(dif)}})
-        print(queryHWSet1Availability(project))
-        num = dif
-    return num
+        col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": amount}})
+        hw.update_one({"Name": "HWSet1"}, {"$set": {"Availability": dif}})
+        return 1
+    else:
+        return 0
     client.close()
 
 def checkOutHWSet2(project, amount):
@@ -85,11 +82,15 @@ def checkOutHWSet2(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    num = -1
-    if queryHWSet2Availability(project) - amount >= 0:
-        col.update_one({"ProjectID": project}, {"HWSet2_Availability": (queryHWSet2Availability(project) - amount)})
-        num = (queryHWSet2Availability(project) - amount)
-    return num
+    hw = db["HardwareSets"]
+    available = queryHWSet1Availability(project)
+    dif = available - amount
+    if dif >= 0:
+        col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut2": amount}})
+        hw.update_one({"Name": "HWSet2"}, {"$set": {"Availability": dif}})
+        return 1
+    else:
+        return 0
     client.close()
 
 def checkInHWSet1(project, amount):
@@ -98,8 +99,20 @@ def checkInHWSet1(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    col.replace_one({"ProjectID": project}, {"HWSet1_Availability": (queryHWSet1Availability(project) + amount)}, True)
-    client.close()
+    hw = db["HardwareSets"]
+    available = queryHWSet1Availability()
+    capacity = queryHWSet1Capacity()
+    dif = available + amount
+    if dif <= capacity:
+        col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": -amount}})
+        hw.update_one({"Name": "HWSet1"}, {"$set": {"Availability": dif}})
+        client.close()
+        return 1
+    else:
+        client.close()
+        return 0
+
+
 
 def checkInHWSet2(project, amount):
     file = certifi.where()
@@ -107,8 +120,18 @@ def checkInHWSet2(project, amount):
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
-    col.update_one({"ProjectID": project}, {"HWSet2_Availability": (queryHWSet2Availability(project) + amount)})
-    client.close()
+    hw = db["HardwareSets"]
+    available = queryHWSet1Availability()
+    capacity = queryHWSet1Capacity()
+    dif = available + amount
+    if dif <= capacity:
+        col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": -amount}})
+        hw.update_one({"Name": "HWSet2"}, {"$set": {"Availability": dif}})
+        client.close()
+        return 1
+    else:
+        client.close()
+        return 0
 
 
 def addNewUser(userid,password):
@@ -118,15 +141,15 @@ def addNewUser(userid,password):
     db = client["HardwareApplication"]
     col = db["UserInfo"]
     if col.find_one({"Username": userid}):
-        return False
         client.close()
+        return False
 
     else:
         password_encrypt = cipher.encrypt(password, 3, 1)
         myUser = {"Username": userid, "Password": password_encrypt, "ProjectAccess": []}
         col.insert_one(myUser)
-        return True
         client.close()
+        return True
 
 
 def authenticateUser(userid, password1):
@@ -179,8 +202,10 @@ def getProject(projectID):
     col = db["ProjectInfo"]
     project = col.find_one({"ProjectID": projectID})
     if project:
-        return project["ProjectID"], project["HWSet1_Availability"], project["HWSet2_Availability"], project["HWSet1_Capacity"], project["HWSet2_Capacity"]
-    client.close()
+        client.close()
+        return project["ProjectID"], project["CheckedOut1"], project["CheckedOut2"], project["Description"]
+
+
 
 
 

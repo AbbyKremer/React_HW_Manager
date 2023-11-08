@@ -1,8 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Grid from '@mui/material/Grid';
+
 import{
     BrowserRouter as Router,
     Routes,
@@ -11,7 +9,7 @@ import{
     useLocation,
     Link,
 } from "react-router-dom";
-import React, {useState} from "react";
+import React from "react";
 import Login from './Login.js'
 import SelectProjects from './SelectProjects.js'
 import ViewProject from './ViewProject.js'
