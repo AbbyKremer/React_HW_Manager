@@ -8,6 +8,7 @@ import React, {useState, useRef} from "react";
 const HardwareSet = (props) =>{
     const[capacity, setCapacity] = useState(props.capacity)
     const[availability, setAvailability] = useState(props.availability)
+    const[checkedOut, setCheckedOut] = useState(props.checkedOut)
     const[num, setNum] = useState('')
 
     const numRef = useRef();
@@ -106,23 +107,27 @@ const Project = (props) =>{
          <div className="App">
              <h2>{props.name}</h2>
              <div className= "increaseMargin">
-                <HardwareSet name = "HWSet1" projectID = {props.name} capacity = {props.HW1C} availability = {props.HW1A}/>
+                <HardwareSet name = "HWSet1" capacity = {props.HW1C} availability = {props.HW1A} checkedOut = {props.CheckOut1}/>
              </div>
              <div className= "increaseMargin">
-                 <HardwareSet name = "HWSet2" capacity = {props.HW2C} availability = {props.HW2A}/>
+                 <HardwareSet name = "HWSet2" capacity = {props.HW2C} availability = {props.HW2A} checkedOut = {props.CheckOut2}/>
              </div>
         </div>
         );
 }
+
 function ViewProject (){
     const location = useLocation();
     const navigate = useNavigate();
     const user = location.state?.user;
     const ProjectID = location.state?.ProjectID;
+    const CheckedOut1 = location.state?.CheckedOut1;
+    const CheckedOut2 = location.state?.CheckedOut2;
+    const Description = location.state?.Description;
+    const HWSet1A = location.state?.HWSet1A;
+    const HWSet2A = location.state?.HWSet1A;
     const HWSet1C = location.state?.HWSet1C;
-    const HWSet2C = location.state?.HWSet2C;
-    const[HWSet1A, setHWSet1A] = useState(location.state?.HWSet1A)
-    const[HWSet2A, setHWSet2A] = useState(location.state?.HWSet1A)
+    const HWSet2C = location.state?.HWSet1C;
 
     const handleProjectSelection = async(event) => {
         event.preventDefault();
@@ -146,8 +151,9 @@ function ViewProject (){
             <div className="App">
                 <h1>Project Manager</h1>
                 <h2>You are currently viewing {ProjectID} </h2>
+                <p>Project Description: {Description}</p>
                 <div className="project">
-                    <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A}/>
+                    <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A} CheckOut1 = {CheckedOut1} CheckOut2 = {CheckedOut2}/>
                 </div>
                 <div className = 'addMargin'>
                     <Button variant="outlined" onClick = {handleProjectSelection}>

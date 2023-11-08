@@ -9,6 +9,13 @@ function ProjectScreen (){
     const user = location.state?.user;
     const[projectID, setProjectID] = useState("");
     const[projectIDJoin, setProjectIDJoin] = useState("");
+    const[capacity1, setCapacity1] = useState("");
+    const[availability1, setAvailability1] = useState("");
+    const[capacity2, setCapacity2] = useState("");
+    const[availability2, setAvailability2] = useState("");
+    const[checkedOut1, setCheckedOut1] = useState("");
+    const[checkedOut2, setCheckedOut2] = useState("");
+    const[description, setDescription] = useState("");
     const navigate = useNavigate();
 
     const handleGoBack = () => {
@@ -32,12 +39,15 @@ function ProjectScreen (){
                 const data = await response.json()
                 navigate('/ProjectView', {
                     state: {
-                        "user":user,
-                        ProjectID: projectID,
-                        HWSet1C: parseInt(data.HWSet1C),
-                        HWSet2C: parseInt(data.HWSet2C),
-                        HWSet1A: parseInt(data.HWSet1A),
-                        HWSet2A: parseInt(data.HWSet2A)
+                        ProjectID: data.ProjectID,
+                        CheckedOut1: data.CheckedOut1,
+                        CheckedOut2: data.CheckedOut2,
+                        Description: data.Description,
+                        HWSet1A: data.HWSet1A,
+                        HWSet2A: data.HWSet2A,
+                        HWSet1C: data.HWSet1C,
+                        HWSet2C: data.HWSet2C
+
                     }
                 })
 
