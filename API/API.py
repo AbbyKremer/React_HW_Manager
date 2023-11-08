@@ -30,10 +30,15 @@ def create_account():
     info = request.get_json()
     username = info.get("username")
     password = info.get("password")
-    db_management.addNewUser(username, password)
-    response = {"username": username, "password": password}
-    jsonify(response)
-    return response, 200
+    user = db_management.addNewUser(username, password)
+    if user:
+        # User is authenticated
+        response = {"username" : username, "password": password}
+        return jsonify(response), 200
+    else:
+        # User is not authenticated
+        response = {"message": "Account creation failed"}
+        return jsonify(response), 401
 
 
 @app.route("/addProject", methods=["POST"])

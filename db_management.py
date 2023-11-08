@@ -118,12 +118,14 @@ def addNewUser(userid,password):
     db = client["HardwareApplication"]
     col = db["UserInfo"]
     if col.find_one({"Username": userid}):
+        return False
         client.close()
-        return "Error"
+
     else:
         password_encrypt = cipher.encrypt(password, 3, 1)
         myUser = {"Username": userid, "Password": password_encrypt, "ProjectAccess": []}
         col.insert_one(myUser)
+        return True
         client.close()
 
 
