@@ -31,7 +31,9 @@ const HardwareSet = (props) =>{
             });
 
             if (response.status === 200) {
-                setAvailability(response.get("availability"))
+                const data = await response.json();
+                setAvailability(data.availability);
+                alert('You successfully checked in ' + numCheck + ' items')
             } else {
                 setNum("")
                 alert('That many items does not exist. Please check in the correct number.')
@@ -59,7 +61,8 @@ const HardwareSet = (props) =>{
             });
 
             if (response.status == 200) {
-                setAvailability(response.get("availability"))
+                const data = await response.json();
+                setAvailability(data.availability);
                 alert('You successfully checked out ' + numCheck + ' items')
             } else {
                 setNum("")

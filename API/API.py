@@ -17,7 +17,7 @@ def check_login():
     user = db_management.authenticateUser(username, password)
     if user:
         # User is authenticated
-        response = {"username" : username, "password": password}
+        response = {"username": username, "password": password}
         return jsonify(response), 200
     else:
         # User is not authenticated
@@ -33,7 +33,7 @@ def create_account():
     user = db_management.addNewUser(username, password)
     if user:
         # User is authenticated
-        response = {"username" : username, "password": password}
+        response = {"username": username, "password": password}
         return jsonify(response), 200
     else:
         # User is not authenticated
@@ -51,17 +51,18 @@ def add_project():
     projectID = info.get("projectID")
     description = info.get("description")
 
-    added=db_management.addProject(projectID,projectName,description,100,100) #make capacity change later
+    added = db_management.addProject(projectID, projectName, description, 100, 100)  # make capacity change later
     if added == "Project Already Exists":
         return jsonify({'message': 'Project Already Exists'}), 401
 
-    db_management.addAccessProject(username, projectID) #would still need to be project ID
+    db_management.addAccessProject(username, projectID)  # would still need to be project ID
 
     project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
     response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
     # response = {"username": username, "projectID": projectID}
     jsonify(response)
     return response, 200
+
 
 @app.route("/joinProject", methods=["POST"])
 def join_project():
@@ -75,6 +76,7 @@ def join_project():
     else:
         db_management.addAccessProject(username, projectID)
         return jsonify({'message': 'success'}), 200
+
 
 @app.route("/getProject", methods=["POST"])
 def get_project():
@@ -112,17 +114,22 @@ def check_out():
     projectID = info.get('projectID')
     num = info.get('num')
     HWSet = info.get("HWSet")
+    response = {}
     if HWSet == "HWSet1":
         output = db_management.checkOutHWSet1(projectID, int(num))
+        response = {"capacity": db_management.queryHWSet1Capacity(),
+                    "availability": db_management.queryHWSet1Availability()}
     else:
         output = db_management.checkOutHWSet2(projectID, int(num))
+        response = {"capacity": db_management.queryHWSet2Capacity(),
+                    "availability": db_management.queryHWSet2Availability()}
     if output != -1:
         print('here')
-        response = {"capacity":db_management.queryHWSet1Capacity(projectID), "availability":db_management.queryHWSet1Availability(projectID)}
         return jsonify(response), 200
     else:
         response = {"message": "You do not have enough hardware to check out this many items"}
         return jsonify(response), 401
+
 
 @app.route("/checkIn", methods=["POST"])
 def check_in():
@@ -133,13 +140,17 @@ def check_in():
     projectID = info.get('projectID')
     num = info.get('num')
     HWSet = info.get("HWSet")
+    response = {}
 
     if HWSet == "HWSet1":
         db_management.checkInHWSet1(projectID, int(num))
+        response = {"capacity": db_management.queryHWSet1Capacity(),
+                    "availability": db_management.queryHWSet1Availability()}
     else:
         db_management.checkInHWSet2(projectID, int(num))
+        response = {"capacity": db_management.queryHWSet2Capacity(),
+                    "availability": db_management.queryHWSet2Availability()}
 
-    response = {"capacity": db_management.queryHWSet1Capacity(projectID), "availability": db_management.queryHWSet1Availability(projectID)}
     return jsonify(response), 200
 
 

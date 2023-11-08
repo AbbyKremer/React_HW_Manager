@@ -66,7 +66,7 @@ def checkOutHWSet1(project, amount):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     hw = db["HardwareSets"]
-    available = queryHWSet1Availability(project)
+    available = queryHWSet1Availability()
     dif = available - amount
     if dif >= 0:
         col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": amount}})
@@ -83,7 +83,7 @@ def checkOutHWSet2(project, amount):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     hw = db["HardwareSets"]
-    available = queryHWSet1Availability(project)
+    available = queryHWSet1Availability()
     dif = available - amount
     if dif >= 0:
         col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut2": amount}})
@@ -121,8 +121,8 @@ def checkInHWSet2(project, amount):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     hw = db["HardwareSets"]
-    available = queryHWSet1Availability()
-    capacity = queryHWSet1Capacity()
+    available = queryHWSet2Availability()
+    capacity = queryHWSet2Capacity()
     dif = available + amount
     if dif <= capacity:
         col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": -amount}})
