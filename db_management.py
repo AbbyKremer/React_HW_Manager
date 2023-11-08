@@ -9,12 +9,11 @@ def addProject(project_name, description, HWSet1_Capacity, HWSet2_Capacity):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     if col.find_one({"ProjectID": project_name}):
-        client.close()
         return "Project Already Exists"
     else:
         myProject = {"ProjectID": project_name, "Description":description, "HWSet1_Availability": HWSet1_Capacity, "HWSet2_Availability": HWSet2_Capacity, "HWSet1_Capacity": HWSet1_Capacity, "HWSet2_Capacity": HWSet2_Capacity}
         col.insert_one(myProject)
-        client.close()
+    client.close()
 
 def queryHWSet1Availability(project_name):
     file = certifi.where()
@@ -23,9 +22,12 @@ def queryHWSet1Availability(project_name):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     project = col.find_one({"ProjectID": project_name})
-    availability = int(project["HWSet1_Availability"])
-    client.close()
+    if project:
+        availability = int(project["HWSet1_Availability"])
+    else:
+        return -1
     return availability
+    client.close()
 
 def queryHWSet2Availability(project_name):
     file = certifi.where()
