@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import React, {useState, useRef} from "react";
 
@@ -117,6 +118,8 @@ const Project = (props) =>{
 
 function ViewProject (){
     const location = useLocation();
+    const navigate = useNavigate();
+    const user = location.state?.user;
     const ProjectID = location.state?.ProjectID;
     const CheckedOut1 = location.state?.CheckedOut1;
     const CheckedOut2 = location.state?.CheckedOut2;
@@ -126,23 +129,36 @@ function ViewProject (){
     const HWSet1C = location.state?.HWSet1C;
     const HWSet2C = location.state?.HWSet1C;
 
-    const navigate = useNavigate();
+    const handleProjectSelection = async(event) => {
+        event.preventDefault();
+        navigate('/Projects', {state:{"user":user}});
+    }
 
-
+    const handleGoBack = () => {
+        navigate(-1); // Navigate back to the previous page
+      };
+      
     return (
-         <div className="App">
-             <h1>Project Manager</h1>
-             <h2>You are currently viewing {ProjectID} </h2>
-             <p>Project Description: {Description}</p>
-             <div className="project">
-                 <Project name = {ProjectID} HW1A = {HWSet1A} HW1C = {HWSet1C} HW2A = {HWSet2A} HW2C = {HWSet2C} CheckOut1 = {CheckedOut1} CheckOut2 = {CheckedOut2}/>
-             </div>
-             <div>
-                <Link to= "/Projects">Project Selection</Link>
-             </div>
-             <div>
-                <Link to= "/">Logout</Link>
-             </div>
+        <div>
+            <div className="back-arrow" onClick={handleGoBack}>
+                <ArrowBackIcon />
+            </div>
+            <div className="App">
+                <h1>Project Manager</h1>
+                <h2>You are currently viewing {ProjectID} </h2>
+                <p>Project Description: {Description}</p>
+                <div className="project">
+                    <Project name = {ProjectID} HW1C = {HWSet1C} HW2C = {HWSet2C} HW1A = {HWSet1A} HW2A = {HWSet2A} CheckOut1 = {CheckedOut1} CheckOut2 = {CheckedOut2}/>
+                </div>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleProjectSelection}>
+                        Project Selection
+                    </Button>
+                </div>
+                <div>
+                    <Link to= "/">Logout</Link>
+                </div>
+            </div>
         </div>
     );
 }

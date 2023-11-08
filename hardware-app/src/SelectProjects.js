@@ -1,6 +1,7 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Button from "@mui/material/Button";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import React, {useState} from "react";
 
 function ProjectScreen (){
@@ -16,6 +17,10 @@ function ProjectScreen (){
     const[checkedOut2, setCheckedOut2] = useState("");
     const[description, setDescription] = useState("");
     const navigate = useNavigate();
+
+    const handleGoBack = () => {
+        navigate(-1); // Navigate back to the previous page
+      };
 
     const handleViewProject= async(event) => {
         event.preventDefault();
@@ -42,6 +47,7 @@ function ProjectScreen (){
                         HWSet2A: data.HWSet2A,
                         HWSet1C: data.HWSet1C,
                         HWSet2C: data.HWSet2C
+
                     }
                 })
 
@@ -83,52 +89,63 @@ function ProjectScreen (){
         }
     }
 
-    return (
-         <div className="centered">
-             <h2>Welcome, {user}!</h2>
-             <h2>Pick a Project to Access: </h2>
-             <div className = 'addMargin'>
-               <OutlinedInput
-                        size="small"
-                        id="component-outlined"
-                        placeholder = "Enter a ProjectID to View"
-                        value = {projectID}
-                        onChange={(event) => {
-                            setProjectID(event.target.value)
-                        }}
-                />
-            </div>
-             <div className = 'addMargin'>
-                <Button variant="outlined" onClick = {handleViewProject}>
-                    View Project
-                </Button>
-            </div>
-             <h2>Join a New Project: </h2>
-             <div className = 'addMargin'>
-               <OutlinedInput
-                        size="small"
-                        id="component-outlined"
-                        placeholder = "Enter a ProjectID to Join"
-                        value = {projectIDJoin}
-                        onChange={(event) => {
-                            setProjectIDJoin(event.target.value)
-                        }}
-                />
-            </div>
-             <div className = 'addMargin'>
-                <Button variant="outlined" onClick = {handleAddProject}>
-                    Join
-                </Button>
-            </div>
-             <div className = "centerText">
-                 <Link to={{pathname: "/CreateProject", state: {"user" :  user}}}>
-                    Create a new Project
-                    </Link>
-             </div>
-             <div className = "centerText">
-                 <Link to= "/">Logout</Link>
-             </div>
+    const handleCreateProject = async(event) => {
+        event.preventDefault();
+        navigate('/CreateProject', {state:{"user":user}});
+    }
+    
 
+    return (
+        <div>
+            <div className="back-arrow" onClick={handleGoBack}>
+                    <ArrowBackIcon />
+            </div>
+            <div className="centered">
+                <h2>Welcome, {user}!</h2>
+                <h2>Pick a Project to Access: </h2>
+                <div className = 'addMargin'>
+                <OutlinedInput
+                            size="small"
+                            id="component-outlined"
+                            placeholder = "Enter a ProjectID to View"
+                            value = {projectID}
+                            onChange={(event) => {
+                                setProjectID(event.target.value)
+                            }}
+                    />
+                </div>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleViewProject}>
+                        View Project
+                    </Button>
+                </div>
+                <h2>Join a New Project: </h2>
+                <div className = 'addMargin'>
+                <OutlinedInput
+                            size="small"
+                            id="component-outlined"
+                            placeholder = "Enter a ProjectID to Join"
+                            value = {projectIDJoin}
+                            onChange={(event) => {
+                                setProjectIDJoin(event.target.value)
+                            }}
+                    />
+                </div>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleAddProject}>
+                        Join
+                    </Button>
+                </div>
+                <div className = 'addMargin'>
+                    <Button variant="outlined" onClick = {handleCreateProject}>
+                        Create a New Project
+                    </Button>
+                </div>
+                <div className = "centerText">
+                    <Link to= "/">Logout</Link>
+                </div>
+
+            </div>
         </div>
         );
 
