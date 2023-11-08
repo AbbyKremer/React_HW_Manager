@@ -2,7 +2,7 @@ import pymongo
 import certifi
 import cipher
 
-def addProject(project_name, HWSet1_Capacity, HWSet2_Capacity):
+def addProject(project_name, description, HWSet1_Capacity, HWSet2_Capacity):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
                                  "&w=majority&ssl=true&tlsCAFile=" + file)
@@ -12,7 +12,7 @@ def addProject(project_name, HWSet1_Capacity, HWSet2_Capacity):
         client.close()
         return "Project Already Exists"
     else:
-        myProject = {"ProjectID": project_name, "HWSet1_Availability": HWSet1_Capacity, "HWSet2_Availability": HWSet2_Capacity, "HWSet1_Capacity": HWSet1_Capacity, "HWSet2_Capacity": HWSet2_Capacity}
+        myProject = {"ProjectID": project_name, "Description":description, "HWSet1_Availability": HWSet1_Capacity, "HWSet2_Availability": HWSet2_Capacity, "HWSet1_Capacity": HWSet1_Capacity, "HWSet2_Capacity": HWSet2_Capacity}
         col.insert_one(myProject)
         client.close()
 
