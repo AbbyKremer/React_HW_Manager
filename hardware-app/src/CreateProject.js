@@ -8,7 +8,6 @@ function CreateProject (){
     const location = useLocation();
     const user = location.state?.user;
     const[projectID, setProjectID] = useState("");
-    const[projectName, setProjectName] = useState("");
     const[projectDescription, setProjectDescription] = useState("");
     const navigate = useNavigate();
 
@@ -24,7 +23,6 @@ function CreateProject (){
                 body: JSON.stringify({
                     username: user,
                     projectID: projectID,
-                    projectName: projectName,
                     description: projectDescription
                 }),
                 headers: {
@@ -36,11 +34,14 @@ function CreateProject (){
                 navigate('/ProjectView', {
                     state: {
                         "user":user,
-                        ProjectID: projectID,
-                        HWSet1C: parseInt(data.HWSet1C),
-                        HWSet2C: parseInt(data.HWSet2C),
-                        HWSet1A: parseInt(data.HWSet1A),
-                        HWSet2A: parseInt(data.HWSet2A)
+                        ProjectID: data.ProjectID,
+                        CheckedOut1: data.CheckedOut1,
+                        CheckedOut2: data.CheckedOut2,
+                        Description: data.Description,
+                        HWSet1A: data.HWSet1A,
+                        HWSet2A: data.HWSet2A,
+                        HWSet1C: data.HWSet1C,
+                        HWSet2C: data.HWSet2C
                     }
                 })
 
@@ -72,17 +73,6 @@ function CreateProject (){
                             value = {projectID}
                             onChange={(event) => {
                                 setProjectID(event.target.value)
-                            }}
-                    />
-                </div>
-                <div className = 'addMargin'>
-                <OutlinedInput
-                            size="small"
-                            id="component-outlined"
-                            placeholder = "Enter a Project Name"
-                            value = {projectName}
-                            onChange={(event) => {
-                                setProjectName(event.target.value)
                             }}
                     />
                 </div>

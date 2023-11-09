@@ -47,18 +47,32 @@ def add_project():
     if not info:
         return jsonify({'message': 'No JSON data receieved'}), 400
     username = info.get("username")
-    projectName = info.get("projectName")
     projectID = info.get("projectID")
     description = info.get("description")
 
-    added = db_management.addProject(projectID, projectName, description, 100, 100)  # make capacity change later
+    added = db_management.addProject(projectID, description)  # make capacity change later
     if added == "Project Already Exists":
         return jsonify({'message': 'Project Already Exists'}), 401
 
     db_management.addAccessProject(username, projectID)  # would still need to be project ID
 
-    project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
-    response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
+    availability1 = db_management.queryHWSet1Availability()
+    availability2 = db_management.queryHWSet2Availability()
+    capacity1 = db_management.queryHWSet1Capacity()
+    capacity2 = db_management.queryHWSet2Capacity()
+    projectID, checkedOut1, checkedOut2, description = db_management.getProject(projectID)
+    response = {
+        "ProjectID": projectID,
+        "CheckedOut1": checkedOut1,
+        "CheckedOut2": checkedOut2,
+        "Description": description,
+        "HWSet1A": availability1,
+        "HWSet2A": availability2,
+        "HWSet1C": capacity1,
+        "HWSet2C": capacity2}
+    # project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
+    # #need to add checkedOut values here, but maybe also include HWset values? for viewing sake?
+    # response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
     # response = {"username": username, "projectID": projectID}
     jsonify(response)
     return response, 200
