@@ -33,6 +33,7 @@ const HardwareSet = (props) =>{
                 const data = await response.json();
                 setAvailability(data.availability);
                 setCheckedOut(data.checkedOut);
+                setNum("")
                 alert('You successfully checked in ' + numCheck + ' items')
             } else {
                 setNum("")
@@ -64,6 +65,7 @@ const HardwareSet = (props) =>{
                 const data = await response.json();
                 setAvailability(data.availability);
                 setCheckedOut(data.checkedOut);
+                setNum("")
                 alert('You successfully checked out ' + numCheck + ' items')
             } else {
                 setNum("")
@@ -132,7 +134,7 @@ function ViewProject (){
     const HWSet1A = location.state?.HWSet1A;
     const HWSet2A = location.state?.HWSet2A;
     const HWSet1C = location.state?.HWSet1C;
-    const HWSet2C = location.state?.HWSet1C;
+    const HWSet2C = location.state?.HWSet2C;
 
     const handleProjectSelection = async(event) => {
         event.preventDefault();
