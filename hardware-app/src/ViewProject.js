@@ -130,7 +130,7 @@ function ViewProject (){
     const CheckedOut2 = location.state?.CheckedOut2;
     const Description = location.state?.Description;
     const HWSet1A = location.state?.HWSet1A;
-    const HWSet2A = location.state?.HWSet1A;
+    const HWSet2A = location.state?.HWSet2A;
     const HWSet1C = location.state?.HWSet1C;
     const HWSet2C = location.state?.HWSet1C;
 
