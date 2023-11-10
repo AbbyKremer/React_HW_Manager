@@ -12,11 +12,9 @@ const HardwareSet = (props) =>{
     const[num, setNum] = useState('')
 
     const numRef = useRef();
-    console.log(numRef)
     const handleCheckIn = async(event) => {
         event.preventDefault();
         const numCheck = numRef.current.value;
-        console.log(numCheck);
         try {
             const response = await fetch("http://localhost:5000/checkIn", {
                 method: "POST",
@@ -38,7 +36,7 @@ const HardwareSet = (props) =>{
                 alert('You successfully checked in ' + numCheck + ' items')
             } else {
                 setNum("")
-                alert('You do not have at least {numCheck} items checked out. Please check-in a smaller amount.')
+                alert("You do not have at least " + numCheck + " items checked out. Please check-in a smaller amount.")
             }
             } catch (error) {
                 setNum("")
@@ -48,7 +46,6 @@ const HardwareSet = (props) =>{
     const handleCheckOut = async(event) => {
         event.preventDefault();
         const numCheck = numRef.current.value;
-        console.log(numCheck);
         try {
             const response = await fetch("http://localhost:5000/checkOut", {
                 method: "POST",

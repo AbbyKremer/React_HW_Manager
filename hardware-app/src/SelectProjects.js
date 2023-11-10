@@ -39,7 +39,7 @@ function ProjectScreen (){
                 const data = await response.json()
                 navigate('/ProjectView', {
                     state: {
-                        "user":user, //i think we need this
+                        user:user,
                         ProjectID: data.ProjectID,
                         CheckedOut1: data.CheckedOut1,
                         CheckedOut2: data.CheckedOut2,
