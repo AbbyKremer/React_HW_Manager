@@ -13,7 +13,11 @@ const HardwareSet = (props) =>{
 
     const handleCheckIn = async(event) => {
         event.preventDefault();
-        try {
+        if(num==""){
+            alert("Enter a number to check in/out")
+        }
+        else{
+            try {
             const response = await fetch("http://localhost:5000/checkIn", {
                 method: "POST",
                 body: JSON.stringify({
@@ -40,11 +44,17 @@ const HardwareSet = (props) =>{
             } catch (error) {
                 setNum("")
                 alert('An error occurred, please try again later.');
+            }
         }
+
     }
     const handleCheckOut = async(event) => {
         event.preventDefault();
-        try {
+        if(num == ""){
+            alert("Enter a number to check in/out")
+        }
+        else{
+           try {
             const response = await fetch("http://localhost:5000/checkOut", {
                 method: "POST",
                 body: JSON.stringify({
@@ -71,6 +81,7 @@ const HardwareSet = (props) =>{
             } catch (error) {
                 setNum("")
                 alert('An error occurred, please try again later.');
+            }
         }
     }
 
@@ -143,13 +154,13 @@ function ViewProject (){
         navigate('/');
     }
 
-    const handleGoBack = () => {
-        navigate(-1); // Navigate back to the previous page
-      };
+    // const handleGoBack = () => {
+    //     navigate('/Projects', {state:{"user":user}}); // Navigate back to the previous page
+    //   };
       
     return (
         <div>
-            <div className="back-arrow" onClick={handleGoBack}>
+            <div className="back-arrow" onClick={handleProjectSelection}>
                 <ArrowBackIcon />
             </div>
             <div className="App">

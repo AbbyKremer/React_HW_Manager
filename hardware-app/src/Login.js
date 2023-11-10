@@ -11,7 +11,14 @@ function Login (){
 
     const handleLogin = async(event) => {
         event.preventDefault();
-        try {
+        if(user == ""){
+            alert("Please enter a username")
+        }
+        else if(pass == ""){
+            alert("Please enter a password")
+        }
+        else{
+            try {
             const response = await fetch("http://localhost:5000/login", {
                 method: "POST",
                 body: JSON.stringify({
@@ -34,7 +41,9 @@ function Login (){
                 setUser("");
                 setPass("");
                 alert('An error occurred, please try again later.');
+            }
         }
+
     };
     const handleRegister = async(event) => {
         event.preventDefault();

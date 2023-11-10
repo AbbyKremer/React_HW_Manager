@@ -24,7 +24,11 @@ function ProjectScreen (){
 
     const handleViewProject= async(event) => {
         event.preventDefault();
-        try {
+        if(projectID == ""){
+            alert("Please enter a ProjectID")
+        }
+        else{
+           try {
             const response = await fetch("http://localhost:5000/getProject", {
                 method: "POST",
                 body: JSON.stringify({
@@ -55,17 +59,22 @@ function ProjectScreen (){
             } else {
                 setProjectID("")
                 alert('Sorry, you do not have access to this project.');
+                }
             }
-        }
-        catch (error) {
+            catch (error) {
                 setProjectID("")
                 alert('An error occurred, please try again later.');
+            }
         }
     }
 
     const handleAddProject= async(event) => {
         event.preventDefault();
-        try {
+        if(projectID == ""){
+            alert("Please enter a ProjectID")
+        }
+        else{
+            try {
             const response = await fetch("http://localhost:5000/joinProject", {
                 method: "POST",
                 body: JSON.stringify({
@@ -87,6 +96,7 @@ function ProjectScreen (){
             } catch (error) {
                 setProjectIDJoin("")
                 alert('An error occurred, please try again later.');
+            }
         }
     }
 

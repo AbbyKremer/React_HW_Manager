@@ -12,7 +12,14 @@ const [user, setUser] = useState("");
 
     const handleRegister = async(event) => {
         event.preventDefault();
-        try {
+        if(user == ""){
+            alert("Please enter a username")
+        }
+        else if(pass == ""){
+            alert("Please enter a password")
+        }
+        else{
+            try {
             const response = await fetch("http://localhost:5000/addUser", {
                 method: "POST",
                 body: JSON.stringify({
@@ -36,7 +43,9 @@ const [user, setUser] = useState("");
                 setUser("");
                 setPass("");
                 alert('An error occurred, please try again later.');
+            }
         }
+
     };
 
 
