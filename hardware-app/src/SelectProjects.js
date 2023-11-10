@@ -70,7 +70,7 @@ function ProjectScreen (){
 
     const handleAddProject= async(event) => {
         event.preventDefault();
-        if(projectID == ""){
+        if(projectIDJoin == ""){
             alert("Please enter a ProjectID")
         }
         else{

@@ -70,10 +70,6 @@ def add_project():
         "HWSet2A": availability2,
         "HWSet1C": capacity1,
         "HWSet2C": capacity2}
-    # project, HW1A, HW2A, HW1C, HW2C = db_management.getProject(projectID)
-    # #need to add checkedOut values here, but maybe also include HWset values? for viewing sake?
-    # response = {"ProjectID": project, "HWSet1A": HW1A, "HWSet2A": HW2A, "HWSet1C": HW1C, "HWSet2C": HW2C}
-    # response = {"username": username, "projectID": projectID}
     jsonify(response)
     return response, 200
 
