@@ -1,52 +1,72 @@
-def shiftRight(inputText, N):
-    return_string = ""
-    for char in inputText:
-        charVal = ord(char) - N
-        if charVal < 34:
-            charVal = 127 - charVal
-        return_string += chr(charVal)
-    return return_string
+# Homework 2
+# By: Ramez Hatab
 
 
-def shiftLeft(inputText, N):
-    return_string = ""
-    for char in inputText:
-        charVal = ord(char) + N
-        if charVal > 126:
-            charVal = 33 + (charVal - 126)
-        return_string += chr(charVal)
-    return return_string
+def encrypt(text, s, d):
+    if "!" in text or " " in text:
+        print("Invalid input, try again")
+        return
+    text = text[::-1]
+    if d != -1 and d != 1:
+        return
+    if s < 1:
+        return
+    encryptedText = ""
+    # now we have reversed string, do the ASCII shifting
+    for c in text:
+        newChar = ord(c)
+        if d == 1:
+            if newChar + s > 126:
+                newChar = newChar + s - 93
+            else:
+                newChar = newChar + s
+        else:
+            if newChar - s < 34:
+                newChar = newChar - s + 93
+            else:
+                newChar = newChar - s
+
+        encryptedText += chr(newChar)
+
+    return encryptedText
 
 
-def encrypt(inputText, N, D):
-    reverse_text = inputText[::-1]
-    if D == -1:
-        return shiftRight(reverse_text, N)
-    elif D == 1:
-        return shiftLeft(reverse_text, N)
+def decrypt(text, s, d):
+    if d != -1 and d != 1:
+        return
+    if s < 1:
+        return
+    encryptedText = ""
+    # now we have reversed string, do the ASCII shifting
+    for c in text:
+        newChar = ord(c)
+        if d == 1:
+            if newChar - s > 126:
+                newChar = newChar - s + 93
+            else:
+                newChar = newChar - s
+        else:
+            if newChar + s < 34:
+                newChar = newChar + s - 93
+            else:
+                newChar = newChar + s
+
+        encryptedText += chr(newChar)
+
+    encryptedText = encryptedText[::-1]
+    return encryptedText
 
 
-def decrypt(inputText, N, D):
-    if D == 1:
-        return_string = shiftRight(inputText, N)
-    elif D == -1:
-        return_string = shiftLeft(inputText, N)
-    return return_string[::-1]
+def readFile():
+    file = open("database.txt", "r")
+    for line in file:
+        if "\n" in line:
+            line = line.removesuffix("\n")
+        words = line.split(" ")
+        print(decrypt(words[0], 3, 1) + " " + decrypt(words[1], 3, 1))
+    file.close()
 
 
+"""
 
-def decryptFile(fileName):
-    database_data = open(fileName)
-    actual_names=""
-    for line in database_data:
-        for word in line.split():
-            decrypted_name = decrypt(word, 3, 1)
-            actual_names += decrypted_name
-            actual_names += " "
-        actual_names += "\n"
-    database_data.close()
-    return actual_names
-
-word = encrypt("pass", 3, 1)
-
-
+"""
