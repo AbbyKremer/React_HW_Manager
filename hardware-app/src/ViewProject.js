@@ -11,16 +11,14 @@ const HardwareSet = (props) =>{
     const[checkedOut, setCheckedOut] = useState(props.checkedOut)
     const[num, setNum] = useState('')
 
-    const numRef = useRef();
     const handleCheckIn = async(event) => {
         event.preventDefault();
-        const numCheck = numRef.current.value;
         try {
             const response = await fetch("http://localhost:5000/checkIn", {
                 method: "POST",
                 body: JSON.stringify({
                     projectID : props.projectID,
-                    num: numCheck,
+                    num: num,
                     checkedOut: checkedOut,
                     HWSet: props.name
                 }),
@@ -34,10 +32,10 @@ const HardwareSet = (props) =>{
                 setAvailability(data.availability);
                 setCheckedOut(data.checkedOut);
                 setNum("")
-                alert('You successfully checked in ' + numCheck + ' items')
+                alert('You successfully checked in ' + num + ' items')
             } else {
                 setNum("")
-                alert("You do not have at least " + numCheck + " items checked out. Please check-in a smaller amount.")
+                alert("You do not have at least " + num + " items checked out. Please check-in a smaller amount.")
             }
             } catch (error) {
                 setNum("")
@@ -46,13 +44,12 @@ const HardwareSet = (props) =>{
     }
     const handleCheckOut = async(event) => {
         event.preventDefault();
-        const numCheck = numRef.current.value;
         try {
             const response = await fetch("http://localhost:5000/checkOut", {
                 method: "POST",
                 body: JSON.stringify({
                     projectID : props.projectID,
-                    num: numCheck,
+                    num: num,
                     checkedOut: checkedOut,
                     HWSet: props.name
                 }),
@@ -65,11 +62,11 @@ const HardwareSet = (props) =>{
                 const data = await response.json();
                 setAvailability(data.availability);
                 setCheckedOut(data.checkedOut);
-                setNum("")
-                alert('You successfully checked out ' + numCheck + ' items')
+                setNum("");
+                alert('You successfully checked out ' + num + ' items')
             } else {
                 setNum("")
-                alert('There is not enough hardware available to check out ' + numCheck + ' items')
+                alert('There is not enough hardware available to check out ' + num + ' items')
             }
             } catch (error) {
                 setNum("")
@@ -88,7 +85,7 @@ const HardwareSet = (props) =>{
                         size="small"
                         id="component-outlined"
                         placeholder = "Enter amount"
-                        inputRef={numRef}
+                        value = {num}
                         onChange={(event) => {
                             setNum(event.target.value);
                         }}
