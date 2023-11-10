@@ -98,7 +98,7 @@ def checkOutHWSet1(project, amount):
         hw.update_one({"Name": "HWSet1"}, {"$set": {"Availability": dif}})
         return 1
     else:
-        return 0
+        return -1
     client.close()
 
 def checkOutHWSet2(project, amount):
@@ -113,10 +113,11 @@ def checkOutHWSet2(project, amount):
     if dif >= 0:
         col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut2": amount}})
         hw.update_one({"Name": "HWSet2"}, {"$set": {"Availability": dif}})
+        client.close()
         return 1
     else:
-        return 0
-    client.close()
+        client.close()
+        return -1
 
 def checkInHWSet1(project, amount):
     file = certifi.where()
@@ -128,6 +129,9 @@ def checkInHWSet1(project, amount):
     available = queryHWSet1Availability()
     capacity = queryHWSet1Capacity()
     dif = available + amount
+    if amount > queryCheckedOut1(project):
+        client.close()
+        return -1
     if dif <= capacity:
         col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": -amount}})
         hw.update_one({"Name": "HWSet1"}, {"$set": {"Availability": dif}})
@@ -135,9 +139,7 @@ def checkInHWSet1(project, amount):
         return 1
     else:
         client.close()
-        return 0
-
-
+        return -1
 
 def checkInHWSet2(project, amount):
     file = certifi.where()
@@ -149,6 +151,9 @@ def checkInHWSet2(project, amount):
     available = queryHWSet2Availability()
     capacity = queryHWSet2Capacity()
     dif = available + amount
+    if amount > queryCheckedOut1(project):
+        client.close()
+        return -1
     if dif <= capacity:
         col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": -amount}})
         hw.update_one({"Name": "HWSet2"}, {"$set": {"Availability": dif}})
@@ -156,7 +161,7 @@ def checkInHWSet2(project, amount):
         return 1
     else:
         client.close()
-        return 0
+        return -1
 
 
 def addNewUser(userid,password):
@@ -187,12 +192,14 @@ def authenticateUser(userid, password1):
     if user:
         password = cipher.decrypt(user["Password"], 3, 1)
         if password1 != password:
+            client.close()
             return False
         else:
+            client.close()
             return True
     else:
+        client.close()
         return False
-    client.close()
 
 
 
@@ -214,10 +221,11 @@ def hasProjectAccess(userid, projectID):
     col = db["UserInfo"]
     account = col.find_one({"Username": userid})
     if projectID in account["ProjectAccess"]:
+        client.close()
         return True
     else:
+        client.close()
         return False
-    client.close()
 
 def getProject(projectID):
     file = certifi.where()

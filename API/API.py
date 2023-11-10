@@ -160,17 +160,20 @@ def check_in():
     checkedOut = info.get('checkedOut')
     response = {}
     if HWSet == "HWSet1":
-        db_management.checkInHWSet1(projectID, int(num))
+        output = db_management.checkInHWSet1(projectID, int(num))
         response = {"capacity": db_management.queryHWSet1Capacity(),
                     "availability": db_management.queryHWSet1Availability(),
                     "checkedOut": db_management.queryCheckedOut1(projectID)}
     else:
-        db_management.checkInHWSet2(projectID, int(num))
+        output = db_management.checkInHWSet2(projectID, int(num))
         response = {"capacity": db_management.queryHWSet2Capacity(),
                     "availability": db_management.queryHWSet2Availability(),
                     "checkedOut": db_management.queryCheckedOut2(projectID)}
+    if output!= -1:
+        return jsonify(response), 200
+    else:
+        return jsonify({"message": "Not enough checked out"}), 401
 
-    return jsonify(response), 200
 
 
 if __name__ == "__main__":

@@ -38,7 +38,7 @@ const HardwareSet = (props) =>{
                 alert('You successfully checked in ' + numCheck + ' items')
             } else {
                 setNum("")
-                alert('That many items does not exist. Please check in the correct number.')
+                alert('You do not have at least {numCheck} items checked out. Please check-in a smaller amount.')
             }
             } catch (error) {
                 setNum("")
@@ -70,7 +70,7 @@ const HardwareSet = (props) =>{
                 alert('You successfully checked out ' + numCheck + ' items')
             } else {
                 setNum("")
-                alert('You do not have enough hardware to check out ' + numCheck + ' items')
+                alert('There is not enough hardware available to check out ' + numCheck + ' items')
             }
             } catch (error) {
                 setNum("")
