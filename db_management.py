@@ -117,6 +117,7 @@ def checkOutHWSet2(project, amount):
         client.close()
         return -1
 
+
 def checkInHWSet1(project, amount):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
@@ -153,7 +154,7 @@ def checkInHWSet2(project, amount):
         client.close()
         return -1
     if dif <= capacity:
-        col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut1": -amount}})
+        col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut2": -amount}})
         hw.update_one({"Name": "HWSet2"}, {"$set": {"Availability": dif}})
         client.close()
         return 1
