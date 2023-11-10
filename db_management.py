@@ -66,8 +66,6 @@ def queryCheckedOut1(projectID):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     project = col.find_one({"ProjectID": projectID})
-    print(projectID)
-    print(project)
     checkedOut = project["CheckedOut1"]
     client.close()
     return checkedOut
@@ -108,7 +106,7 @@ def checkOutHWSet2(project, amount):
     db = client["HardwareApplication"]
     col = db["ProjectInfo"]
     hw = db["HardwareSets"]
-    available = queryHWSet1Availability()
+    available = queryHWSet2Availability()
     dif = available - amount
     if dif >= 0:
         col.update_one({"ProjectID": project}, {"$inc": {"CheckedOut2": amount}})
