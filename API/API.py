@@ -128,17 +128,20 @@ def check_out():
     projectID = info.get('projectID')
     num = info.get('num')
     HWSet = info.get("HWSet")
+    checkedOut = info.get('checkedOut')
     response = {}
     if HWSet == "HWSet1":
         output = db_management.checkOutHWSet1(projectID, int(num))
         response = {"capacity": db_management.queryHWSet1Capacity(),
-                    "availability": db_management.queryHWSet1Availability()}
+                    "availability": db_management.queryHWSet1Availability(),
+                    "checkedOut": db_management.queryCheckedOut1(projectID)
+                    }
     else:
         output = db_management.checkOutHWSet2(projectID, int(num))
         response = {"capacity": db_management.queryHWSet2Capacity(),
-                    "availability": db_management.queryHWSet2Availability()}
+                    "availability": db_management.queryHWSet2Availability(),
+                    "checkedOut": db_management.queryCheckedOut2(projectID)}
     if output != -1:
-        print('here')
         return jsonify(response), 200
     else:
         response = {"message": "You do not have enough hardware to check out this many items"}
@@ -154,16 +157,18 @@ def check_in():
     projectID = info.get('projectID')
     num = info.get('num')
     HWSet = info.get("HWSet")
+    checkedOut = info.get('checkedOut')
     response = {}
-
     if HWSet == "HWSet1":
         db_management.checkInHWSet1(projectID, int(num))
         response = {"capacity": db_management.queryHWSet1Capacity(),
-                    "availability": db_management.queryHWSet1Availability()}
+                    "availability": db_management.queryHWSet1Availability(),
+                    "checkedOut": db_management.queryCheckedOut1(projectID)}
     else:
         db_management.checkInHWSet2(projectID, int(num))
         response = {"capacity": db_management.queryHWSet2Capacity(),
-                    "availability": db_management.queryHWSet2Availability()}
+                    "availability": db_management.queryHWSet2Availability(),
+                    "checkedOut": db_management.queryCheckedOut2(projectID)}
 
     return jsonify(response), 200
 

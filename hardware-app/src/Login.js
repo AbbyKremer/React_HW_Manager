@@ -112,9 +112,6 @@ function LoginScreen(){
 
     return(
         <div>
-            <div className="back-arrow" onClick={handleGoBack}>
-            <ArrowBackIcon />
-            </div>
             <div className = "centered">
                 <h2>Welcome to the Hardware Manager. Login to Access Projects.</h2>
                 <Login/>

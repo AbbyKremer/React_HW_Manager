@@ -23,6 +23,7 @@ const HardwareSet = (props) =>{
                 body: JSON.stringify({
                     projectID : props.projectID,
                     num: numCheck,
+                    checkedOut: checkedOut,
                     HWSet: props.name
                 }),
                 headers: {
@@ -33,6 +34,7 @@ const HardwareSet = (props) =>{
             if (response.status === 200) {
                 const data = await response.json();
                 setAvailability(data.availability);
+                setCheckedOut(data.checkedOut);
                 alert('You successfully checked in ' + numCheck + ' items')
             } else {
                 setNum("")
@@ -53,6 +55,7 @@ const HardwareSet = (props) =>{
                 body: JSON.stringify({
                     projectID : props.projectID,
                     num: numCheck,
+                    checkedOut: checkedOut,
                     HWSet: props.name
                 }),
                 headers: {
@@ -63,6 +66,7 @@ const HardwareSet = (props) =>{
             if (response.status == 200) {
                 const data = await response.json();
                 setAvailability(data.availability);
+                setCheckedOut(data.checkedOut);
                 alert('You successfully checked out ' + numCheck + ' items')
             } else {
                 setNum("")
@@ -102,6 +106,7 @@ const HardwareSet = (props) =>{
                     </Button>
                 </Grid>
             </Grid>
+            <p>This project has checked out {checkedOut} items from {props.name}</p>
         </div>
     )
 }
@@ -110,10 +115,10 @@ const Project = (props) =>{
          <div className="App">
              <h2>{props.name}</h2>
              <div className= "increaseMargin">
-                <HardwareSet name = "HWSet1" capacity = {props.HW1C} availability = {props.HW1A} checkedOut = {props.CheckOut1}/>
+                <HardwareSet name = "HWSet1" projectID = {props.name} capacity = {props.HW1C} availability = {props.HW1A} checkedOut = {props.CheckOut1}/>
              </div>
              <div className= "increaseMargin">
-                 <HardwareSet name = "HWSet2" capacity = {props.HW2C} availability = {props.HW2A} checkedOut = {props.CheckOut2}/>
+                 <HardwareSet name = "HWSet2" projectID = {props.name} capacity = {props.HW2C} availability = {props.HW2A} checkedOut = {props.CheckOut2}/>
              </div>
         </div>
         );

@@ -59,6 +59,31 @@ def queryHWSet2Capacity():
     client.close()
     return capacity
 
+def queryCheckedOut1(projectID):
+    file = certifi.where()
+    client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
+                                 "&w=majority&ssl=true&tlsCAFile=" + file)
+    db = client["HardwareApplication"]
+    col = db["ProjectInfo"]
+    project = col.find_one({"ProjectID": projectID})
+    print(projectID)
+    print(project)
+    checkedOut = project["CheckedOut1"]
+    client.close()
+    return checkedOut
+
+def queryCheckedOut2(projectID):
+    file = certifi.where()
+    client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
+                                 "&w=majority&ssl=true&tlsCAFile=" + file)
+    db = client["HardwareApplication"]
+    col = db["ProjectInfo"]
+    project = col.find_one({"ProjectID": projectID})
+    checkedOut = project["CheckedOut2"]
+    client.close()
+    return checkedOut
+
+
 def checkOutHWSet1(project, amount):
     file = certifi.where()
     client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
