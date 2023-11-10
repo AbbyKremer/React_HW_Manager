@@ -39,8 +39,8 @@ function ProjectScreen (){
                     "Content-Type": "application/json",
                 },
             });
+            const data = await response.json()
             if (response.status == 200) {
-                const data = await response.json()
                 navigate('/ProjectView', {
                     state: {
                         user:user,
@@ -58,7 +58,7 @@ function ProjectScreen (){
 
             } else {
                 setProjectID("")
-                alert(response.message);
+                alert(data.message);
                 }
             }
             catch (error) {

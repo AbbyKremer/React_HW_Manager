@@ -122,7 +122,7 @@ def get_project():
             return jsonify(response), 401
 
     else:
-        response = {"message": "This project does not exist. Please create the project."}
+        response = {"message": "This project does not exist. Please create a new project or sign into a different one."}
         return jsonify(response), 401
 
 
