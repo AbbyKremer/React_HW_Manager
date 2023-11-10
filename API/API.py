@@ -99,24 +99,30 @@ def get_project():
         return jsonify({'message': 'No JSON data receieved'}), 400
     username = info.get('username')
     projectID = info.get("projectID")
-    if db_management.hasProjectAccess(username, projectID):
-        availability1 = db_management.queryHWSet1Availability()
-        availability2 = db_management.queryHWSet2Availability()
-        capacity1 = db_management.queryHWSet1Capacity()
-        capacity2 = db_management.queryHWSet2Capacity()
-        projectID, checkedOut1, checkedOut2, description = db_management.getProject(projectID)
-        response = {
-            "ProjectID": projectID,
-            "CheckedOut1": checkedOut1,
-            "CheckedOut2": checkedOut2,
-            "Description": description,
-            "HWSet1A": availability1,
-            "HWSet2A": availability2,
-            "HWSet1C": capacity1,
-            "HWSet2C": capacity2}
-        return jsonify(response), 200
+
+    if(db_management.checkExists(projectID)):
+        if db_management.hasProjectAccess(username, projectID):
+            availability1 = db_management.queryHWSet1Availability()
+            availability2 = db_management.queryHWSet2Availability()
+            capacity1 = db_management.queryHWSet1Capacity()
+            capacity2 = db_management.queryHWSet2Capacity()
+            projectID, checkedOut1, checkedOut2, description = db_management.getProject(projectID)
+            response = {
+                "ProjectID": projectID,
+                "CheckedOut1": checkedOut1,
+                "CheckedOut2": checkedOut2,
+                "Description": description,
+                "HWSet1A": availability1,
+                "HWSet2A": availability2,
+                "HWSet1C": capacity1,
+                "HWSet2C": capacity2}
+            return jsonify(response), 200
+        else:
+            response = {"message": "You do not have access to this project. Please request to join."}
+            return jsonify(response), 401
+
     else:
-        response = {"message": "You do not have access to this project. Please request to join"}
+        response = {"message": "This project does not exist. Please create the project."}
         return jsonify(response), 401
 
 

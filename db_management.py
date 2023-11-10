@@ -237,6 +237,20 @@ def getProject(projectID):
         client.close()
         return project["ProjectID"], project["CheckedOut1"], project["CheckedOut2"], project["Description"]
 
+def checkExists(projectID):
+    file = certifi.where()
+    client = pymongo.MongoClient("mongodb+srv://abbykremer:abbykremer@cluster0.x1jngyq.mongodb.net/?retryWrites=true"
+                                 "&w=majority&ssl=true&tlsCAFile=" + file)
+    db = client["HardwareApplication"]
+    col = db["ProjectInfo"]
+    project = col.find_one({"ProjectID": projectID})
+    if project:
+        return True
+    else:
+        return False
+
+
+
 
 
 

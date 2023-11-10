@@ -58,7 +58,7 @@ function ProjectScreen (){
 
             } else {
                 setProjectID("")
-                alert('Sorry, you do not have access to this project.');
+                alert(response.message);
                 }
             }
             catch (error) {
