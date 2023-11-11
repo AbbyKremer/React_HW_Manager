@@ -150,7 +150,7 @@ def checkInHWSet2(project, amount):
     available = queryHWSet2Availability()
     capacity = queryHWSet2Capacity()
     dif = available + amount
-    if amount > queryCheckedOut1(project):
+    if amount > queryCheckedOut2(project):
         client.close()
         return -1
     if dif <= capacity:
