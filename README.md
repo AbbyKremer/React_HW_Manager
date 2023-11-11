@@ -5,10 +5,10 @@ Project Members: Zoe Eldridge, Ramez Hatab, Abigail Kremer, Abigail Van Keer, Re
 
 In order to run the project locally,
 
-- cd [path]/461L-Project
-- run the API by running python API.py in the command line
 - cd [path]/461L-Project/hardware-app
 - run npm install
 - run npm start
+- cd .. (cd [path]/461L-Project)
+- run the API by running python API.py in the command line
 
 
