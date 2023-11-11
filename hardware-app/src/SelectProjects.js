@@ -85,13 +85,13 @@ function ProjectScreen (){
                     "Content-Type": "application/json",
                 },
             });
-
+            const data = await response.json()
             if (response.status === 200) {
                 alert('You were successfully added to ' + projectIDJoin)
                 setProjectIDJoin("")
             } else{
                 setProjectIDJoin("")
-                alert('You have already joined this project.')
+                alert(data.message)
             }
             } catch (error) {
                 setProjectIDJoin("")

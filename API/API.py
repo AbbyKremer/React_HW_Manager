@@ -81,11 +81,16 @@ def join_project():
         return jsonify({'message': 'No JSON data receieved'}), 400
     username = info.get('username')
     projectID = info.get("projectIDJoin")
-    if db_management.hasProjectAccess(username, projectID):
-        return jsonify({'message': 'You already have access to this project.'}), 401
+    if db_management.checkExists(projectID):
+        if db_management.hasProjectAccess(username, projectID):
+            return jsonify({'message': 'You already have access to this project.'}), 401
+        else:
+            db_management.addAccessProject(username, projectID)
+            return jsonify({'message': 'success'}), 200
     else:
-        db_management.addAccessProject(username, projectID)
-        return jsonify({'message': 'success'}), 200
+        response = {"message": "This project does not exist. Please create a new project or join a different one."}
+        return jsonify(response), 401
+
 
 
 @app.route("/getProject", methods=["POST"])
