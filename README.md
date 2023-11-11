@@ -1,7 +1,7 @@
 ﻿# Team[Placeholder] GitHub Project
 
 ## Project Overview
-Welcome to the GitHub repository for Team[Placeholder]'s project! Our team, consisting of Zoe Eldridge, Ramez Hatab, Abigail Kremer, Abigail Van Keer, and Reese Welty.
+Welcome to the GitHub repository for Team[Placeholder]'s project! Our team consists of Zoe Eldridge, Ramez Hatab, Abigail Kremer, Abigail Van Keer, and Reese Welty.
 
 ## Getting Started
 
